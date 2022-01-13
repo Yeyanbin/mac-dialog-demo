@@ -18,6 +18,7 @@ import {
   NSpin,
   NSpace,
   NTabs,
+  NStatistic,
   // form component
   NForm,
   NFormItem,
@@ -63,6 +64,7 @@ export default create({
     NSelect,
     NSwitch,
     NTimePicker,
+    NStatistic
   ]
 });
 
