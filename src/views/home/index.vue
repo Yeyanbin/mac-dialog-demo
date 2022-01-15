@@ -2,27 +2,30 @@
   <div class="container">
     <WindowDialog></WindowDialog>
     <WindowDialog :dialogProp="{ x: 50, y: 50 }" @clickDialog="clickDialog">
-      <n-form :model="model" ref="formRef" :rules="rules">
-        <n-form-item path="age" label="年龄">
-          <n-input v-model:value="model.age" @keydown.enter.prevent />
-        </n-form-item>
-        <n-form-item path="password" label="密码">
-          <n-input
-            v-model:value="model.password"
-            @input="handlePasswordInput"
-            type="password"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item first path="reenteredPassword" label="重复密码" ref="rPasswordFormItemRef">
-          <n-input
-            :disabled="!model.password"
-            v-model:value="model.reenteredPassword"
-            type="password"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-      </n-form>
+      <template v-slot:title>Login</template>
+      <div style="padding: 15px;">
+        <n-form :model="model" ref="formRef" :rules="rules">
+          <n-form-item path="age" label="年龄">
+            <n-input v-model:value="model.age" @keydown.enter.prevent />
+          </n-form-item>
+          <n-form-item path="password" label="密码">
+            <n-input
+              v-model:value="model.password"
+              @input="handlePasswordInput"
+              type="password"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item first path="reenteredPassword" label="重复密码" ref="rPasswordFormItemRef">
+            <n-input
+              :disabled="!model.password"
+              v-model:value="model.reenteredPassword"
+              type="password"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </n-form>
+      </div>
     </WindowDialog>
     <WindowDialog :dialogProp="{ x: 100, y: 150, width: '700px' }">
       <template v-slot:title>test title</template>

@@ -1,7 +1,8 @@
 <template>
-  <div class="dialog" :style="{
+  <div ref="dialogRef" class="dialog" :style="{
     transform: `translate(${dialogProp.x}px, ${dialogProp.y}px)`,
     ...dialogProp,
+    zIndex: ZIndex,
   }"
   @click="clickDialog">
     <div class="header" ref="headerRef">
@@ -29,8 +30,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref, toRefs, watch } from 'vue';
+import { updateZIndex } from './domains/ZIndexHandler';
+
+import { addMouseUpEventLister, MOUSE_MOVE_STATE_MAP } from './domains/moveEventHandler';
+
 
 const headerRef = ref<HTMLElement>();
+const dialogRef = ref<HTMLElement>();
 
 const emit = defineEmits(['clickDialog'])
 
@@ -61,6 +67,8 @@ const props = defineProps({
   }
 });
 
+const ZIndex = ref(100);
+
 
 // const { x, y } = toRefs(props.defineOptions);
 
@@ -85,7 +93,7 @@ onMounted(() => {
   // 先记下点击的点的offsetX和Y
   let clickX: number, clickY: number;
   let baseX = dialogProp.value.x, baseY = dialogProp.value.y;
-  let state = 0;
+  let state = ref(MOUSE_MOVE_STATE_MAP.READY);
 
   headerRef.value?.addEventListener('selectstart', (ev) => {
     console.log('select start')
@@ -93,39 +101,49 @@ onMounted(() => {
     return false;
   })
 
+
   headerRef.value?.addEventListener('mousedown', (ev) => {
     console.log('down ev', ev);
     clickX = ev.x;
     clickY = ev.y;
-    state = 1;
+    state.value = MOUSE_MOVE_STATE_MAP.MOVING;
+
+    // 设置mouseup监听
+    addMouseUpEventLister((ev) => {
+      console.log('up ev', ev);
+      baseX = dialogProp.value.x;
+      baseY = dialogProp.value.y;
+      state.value = MOUSE_MOVE_STATE_MAP.READY;
+    });
   });
 
-  headerRef.value?.addEventListener('mousemove', (ev) => {
+  dialogRef.value.addEventListener('mousedown', (ev) => {
+
+    // 获取z-index值，弹窗来到最顶部
+    ZIndex.value = updateZIndex();
+  });
+  
+  document.body.addEventListener('mousemove', (ev) => {
     // console.log('move ev', ev);
-    if (state === 1) {
+    if (state.value === MOUSE_MOVE_STATE_MAP.MOVING) {
       dialogProp.value.x = ev.x - clickX + baseX;
       dialogProp.value.y = ev.y - clickY + baseY;
-
       // console.log('x', transX.value, 'y', transY.value);
     }
   });
-  headerRef.value?.addEventListener('mouseup', (ev) => {
-    console.log('up ev', ev);
-    baseX = dialogProp.value.x;
-    baseY = dialogProp.value.y;
-    state = 0;
-  });
 
-  headerRef.value?.addEventListener('mouseover', (ev) => {
-    // console.log('mouseover ev', ev);
-    // state = 0;
-  });  
-  headerRef.value?.addEventListener('mouseleave', (ev) => {
-    console.log('mouseleave ev', ev);
-    // baseX = dialogProp.value.x;
-    // baseY = dialogProp.value.y;
-    state = 0;
-  });
+  // headerRef.value?.addEventListener('mouseup', );
+
+  // headerRef.value?.addEventListener('mouseover', (ev) => {
+  //   // console.log('mouseover ev', ev);
+  //   // state = 0;
+  // });  
+  // headerRef.value?.addEventListener('mouseleave', (ev) => {
+  //   // console.log('mouseleave ev', ev);
+  //   // baseX = dialogProp.value.x;
+  //   // baseY = dialogProp.value.y;
+  //   // state = 0;
+  // });
 })
 
 </script>
