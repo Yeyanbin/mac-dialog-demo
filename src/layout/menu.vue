@@ -4,8 +4,7 @@
     <n-layout has-sider :style="{ height: `calc(${props.dialogProp.height} - 36px)`, }">
       <n-layout-content style="overflow: hidden ;">
         <template v-if="nowComponent">
-          <!-- <component :is="nowComponent" /> -->
-          <nowComponent></nowComponent>
+          <nowComponent v-bind="props"></nowComponent>
         </template>
       </n-layout-content>
       <n-layout-sider
@@ -33,7 +32,7 @@
 
 import { LogInOutline, HomeOutline, FolderOutline } from '@vicons/ionicons5';
 import { NIcon } from 'naive-ui';
-import { Component, h, ref } from 'vue';
+import { Component, h, ref, markRaw } from 'vue';
 import Home from '@/views/home/index.vue';
 import Login from '@/views/login/index.vue';
 import demo from '@/views/demo/index.vue';
@@ -44,7 +43,8 @@ const props = defineProps({
   },
   context: {
     type: Object
-  }
+  },
+  dialogItem: Object,
 });
 
 const collapsed = ref(true);
@@ -61,9 +61,9 @@ const menu = [
   },
   {
     label: 'Login',
-    key: 'Login',
+    key: 'login',
     icon: renderIcon(LogInOutline),
-    component: Login,
+    component: markRaw(Login),
   },
   {
     label: 'demo',
@@ -72,8 +72,21 @@ const menu = [
     component: demo,
   }
 ];
+const getDefaultComponent = () => {
+  const key = props.dialogItem?.key;
+  if (!key) return undefined;
+  
+  for(const item of menu) {
+    if (item.key === key) {
+      return item.component;
+    }
+  }
+  
 
-const nowComponent = ref<Component>();
+  return undefined;
+}
+
+const nowComponent = ref<Component>(getDefaultComponent());
 
 const handleUpdateValue = (key, menuOption) => {
   console.log(key, menuOption);

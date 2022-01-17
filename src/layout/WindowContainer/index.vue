@@ -8,7 +8,7 @@
         :title="dialogItem.title"
         v-on="handleDialogFunc(dialogItem.func, index)">
         <template v-slot="scoped">
-          <Menu :is="dialogItem.component" v-bind="scoped">
+          <Menu :is="dialogItem.component" :dialogItem="dialogItem" v-bind="scoped">
           </Menu>
         </template>
       </WindowDialog>
@@ -55,6 +55,11 @@ const props = defineProps({
   }
 })
 
+  document.addEventListener('selectstart', (ev) => {
+    console.log('select start')
+    ev.preventDefault();
+    return false;
+  })
 
 const {
   windowDialogList,

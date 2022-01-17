@@ -18,8 +18,10 @@ const defaultWindowDialogList: IWindowDialog[] = [
     name: '123',
     defaultDialogProp: {
       x: 50, 
-      y: 50
+      y: 50,
+      width: '600px'
     },
+    key: 'login',
     func: {
       onCloseDialog: (ev, { name }) => {
         console.log('closeDialog', ev, name);
@@ -32,47 +34,47 @@ const defaultWindowDialogList: IWindowDialog[] = [
       },
     }
   },
-  {
-    state: WINDOW_DIALOG_STATE.NORMAL,
-    title: '标题AAA',
-    name: '123',
-    // component: markRaw(Menu),
-    defaultDialogProp: {
-      x: 100, 
-      y: 100
-    },
-    func: {
-      onCloseDialog: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onMinimize: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onClickDialog: (ev, {dialogProp}) => {
-        console.log('onClickDialog', ev, dialogProp);
-      },
-    },
-  },
-  {
-    state: WINDOW_DIALOG_STATE.NORMAL,
-    title: '1',
-    name: '123',
-    defaultDialogProp: {
-      x: 150, 
-      y: 150
-    },
-    func: {
-      onCloseDialog: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onMinimize: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onClickDialog: (ev, { dialogProp }) => {
-        console.log('onClickDialog', ev, dialogProp);
-      },
-    }
-  },
+  // {
+  //   state: WINDOW_DIALOG_STATE.NORMAL,
+  //   title: '标题AAA',
+  //   name: '123',
+  //   // component: markRaw(Menu),
+  //   defaultDialogProp: {
+  //     x: 100, 
+  //     y: 100
+  //   },
+  //   func: {
+  //     onCloseDialog: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onMinimize: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onClickDialog: (ev, {dialogProp}) => {
+  //       console.log('onClickDialog', ev, dialogProp);
+  //     },
+  //   },
+  // },
+  // {
+  //   state: WINDOW_DIALOG_STATE.NORMAL,
+  //   title: '1',
+  //   name: '123',
+  //   defaultDialogProp: {
+  //     x: 150, 
+  //     y: 150
+  //   },
+  //   func: {
+  //     onCloseDialog: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onMinimize: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onClickDialog: (ev, { dialogProp }) => {
+  //       console.log('onClickDialog', ev, dialogProp);
+  //     },
+  //   }
+  // },
 ];
 </script>
 
