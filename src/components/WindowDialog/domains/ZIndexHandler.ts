@@ -1,7 +1,7 @@
 
 
-let maxZIndex = 100;
+const step = 2;
 
-export const updateZIndex = () => {
-  return ++maxZIndex;
+export const updateZIndex = (index) => {
+  return index + step;
 };

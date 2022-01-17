@@ -1,5 +1,4 @@
 
-import { Ref } from 'vue';
 import useDebounce from './rAFDebounce';
 
 const MOUSE_MOVE_STATE_MAP = {
@@ -9,6 +8,7 @@ const MOUSE_MOVE_STATE_MAP = {
 
 type TMouseEventItem = (ev: MouseEvent) => void;
 
+// move
 const moveEventList: TMouseEventItem[] = [];
 
 const moveEventDebounce = useDebounce<MouseEvent>((ev: MouseEvent) => {
@@ -34,16 +34,17 @@ const removeMoveEventListenr = (key) => {
 }
 
 // up
-
-let upEvent = undefined;
+const upEvent = [];
 
 document.body.addEventListener('mouseup', (ev: MouseEvent) => {
-  upEvent && upEvent(ev);
-  upEvent = undefined;
+  while(upEvent.length > 0) {
+    const event = upEvent.pop();
+    event(ev);
+  }
 });
 
 const addMouseUpEventLister = (mouseEventItem: TMouseEventItem) => {
-  upEvent = mouseEventItem;
+  upEvent.push(mouseEventItem);
 };
 
 export {

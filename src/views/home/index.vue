@@ -1,8 +1,9 @@
 <template>
   <div class="container">
-    <WindowDialog></WindowDialog>
-    <WindowDialog :dialogProp="{ x: 50, y: 50 }" @clickDialog="clickDialog">
-      <template v-slot:title>Login</template>
+    home 
+    <!-- <WindowDialog></WindowDialog>
+    <WindowDialog v-if="dialogShow" :dialogProp="{ x: 50, y: 50 }" @clickDialog="clickDialog">
+      <template v-slot:title>测试关闭的dialog</template>
       <div style="padding: 15px;">
         <n-form :model="model" ref="formRef" :rules="rules">
           <n-form-item path="age" label="年龄">
@@ -13,6 +14,9 @@
               v-model:value="model.password"
               @input="handlePasswordInput"
               type="password"
+              :input-props="{
+                autocomplete: 'off'
+              }"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -21,6 +25,9 @@
               :disabled="!model.password"
               v-model:value="model.reenteredPassword"
               type="password"
+              :input-props="{
+                autocomplete: 'off'
+              }"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -30,22 +37,25 @@
     <WindowDialog :dialogProp="{ x: 100, y: 150, width: '700px' }">
       <template v-slot:title>test title</template>
       <template v-slot="{ dialogProp }">
-        <!-- {{ dialogProp }} -->
         <div style="padding: 40px;">
           <template v-if="dialogProp" v-for="(value, key) in dialogProp">
             <n-statistic style="width: 100px;display: inline-block;" :label="key">{{ value }}</n-statistic>
           </template>
         </div>
       </template>
-    </WindowDialog>
+    </WindowDialog> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import WindowDialog from '@/components/WindowDialog/index.vue';
+
 import { ref } from 'vue';
 
+const dialogShow = ref(true);
+
 const formRef = ref(null);
+
 const model = ref({
   age: null,
   password: null,
@@ -53,7 +63,8 @@ const model = ref({
 })
 
 const clickDialog = () => {
-  console.log('clickDialog');
+  console.log('clickDialog outer');
+  dialogShow.value = false;
 };
 
 const rPasswordFormItemRef = ref(null)
