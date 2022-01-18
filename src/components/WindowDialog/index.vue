@@ -18,7 +18,7 @@
           <slot name="title">{{props.title}}</slot>
         </span>
       </div>
-      <div>
+      <div style="height: calc( 100% - 36px)">
         <slot :dialogProp="dialogProp" :context="getContext()">
           content
         </slot>      

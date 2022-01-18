@@ -1,34 +1,33 @@
 <template>
   <div class="window-dialog-container">
     <template v-for="(dialogItem, index) of windowDialogList" :key="dialogItem.key">
-      <WindowDialog 
+      <WindowDialog
         :dialog-prop="dialogItem.defaultDialogProp"
         :name="dialogItem.name"
         :index="index"
         :title="dialogItem.title"
-        v-on="handleDialogFunc(dialogItem.func, index)">
+        v-on="handleDialogFunc(dialogItem.func, index)"
+      >
         <template v-slot="scoped">
-          <Menu :is="dialogItem.component" :dialogItem="dialogItem" v-bind="scoped">
-          </Menu>
+          <Browser v-if="dialogItem.key === 'browser'"></Browser>
+          <Menu v-else :is="dialogItem.component" :dialogItem="dialogItem" v-bind="scoped"></Menu>
         </template>
       </WindowDialog>
     </template>
   </div>
   <div class="window-dialog-top">
     <div class="window-dialog-operator">
-      <div>
-        窗口数量：{{windowDialogList.length}}
-      </div>
+      <div>窗口数量：{{ windowDialogList.length }}</div>
       <div class="operator-button-group">
         <!-- <n-button @click="addWindowDialog">增加窗口</n-button> -->
         <n-button @click="addWindowDialog" circle size="tiny" #icon>
-          <n-icon><AddCircleOutline/></n-icon>
+          <n-icon>
+            <AddCircleOutline />
+          </n-icon>
         </n-button>
       </div>
     </div>
-    <div class="window-dialog-menu">
-
-    </div>
+    <div class="window-dialog-menu"></div>
   </div>
 </template>
 
@@ -40,6 +39,8 @@ import Menu from '../menu.vue';
 
 import { AddCircleOutline } from '@vicons/ionicons5';
 import { IWindowDialog } from '../../interface/windowDialog';
+
+import Browser from '@/application/Browser/index.vue';
 
 // 这里用markRaw估计是在setup里才需要的
 // console.log('login ', markRaw(login));
@@ -55,11 +56,11 @@ const props = defineProps({
   }
 })
 
-  document.addEventListener('selectstart', (ev) => {
-    console.log('select start')
-    ev.preventDefault();
-    return false;
-  })
+document.addEventListener('selectstart', (ev) => {
+  console.log('select start')
+  ev.preventDefault();
+  return false;
+})
 
 const {
   windowDialogList,
@@ -70,13 +71,12 @@ const {
 </script>
 
 <style lang="scss" scoped>
-
 .window-dialog-top {
   position: relative;
   bottom: 0px;
   width: 100vw;
 }
-.window-dialog-operator{
+.window-dialog-operator {
   height: 30px;
   margin: 5px 10px;
   background-color: #ffffff;
