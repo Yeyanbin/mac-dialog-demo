@@ -1,5 +1,4 @@
-
-import useDebounce from './rAFDebounce';
+import useDebounce from "./rAFDebounce";
 
 const MOUSE_MOVE_STATE_MAP = {
   READY: 1,
@@ -15,29 +14,29 @@ const moveEventDebounce = useDebounce<MouseEvent>((ev: MouseEvent) => {
   moveEventList.forEach((itemFunc) => {
     itemFunc && itemFunc(ev);
   });
-}); 
+});
 
 const moveEventFunc = (ev: MouseEvent) => {
   moveEventDebounce.run(ev);
 };
 
-document.body.addEventListener('mousemove', moveEventFunc);
+document.body.addEventListener("mousemove", moveEventFunc);
 
-const addMoveEventListenr = (mouseEventItem: TMouseEventItem) => {
+const addMoveEventListener = (mouseEventItem: TMouseEventItem) => {
   const key = moveEventList.length;
   moveEventList.push(mouseEventItem);
   return key;
 };
 
-const removeMoveEventListenr = (key) => {
+const removeMoveEventListener = (key) => {
   moveEventList[key] = undefined;
-}
+};
 
 // up
 const upEvent = [];
 
-document.body.addEventListener('mouseup', (ev: MouseEvent) => {
-  while(upEvent.length > 0) {
+document.body.addEventListener("mouseup", (ev: MouseEvent) => {
+  while (upEvent.length > 0) {
     const event = upEvent.pop();
     event(ev);
   }
@@ -50,7 +49,7 @@ const addMouseUpEventLister = (mouseEventItem: TMouseEventItem) => {
 export {
   MOUSE_MOVE_STATE_MAP,
   TMouseEventItem,
-  addMoveEventListenr,
-  removeMoveEventListenr,
-  addMouseUpEventLister
+  addMoveEventListener,
+  removeMoveEventListener,
+  addMouseUpEventLister,
 };
