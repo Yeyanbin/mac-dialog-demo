@@ -44,7 +44,7 @@
 import { onMounted, ref, toRefs, watch } from 'vue';
 import { updateZIndex } from './domains/ZIndexHandler';
 
-import { addMouseUpEventLister, addMoveEventListenr, MOUSE_MOVE_STATE_MAP, removeMoveEventListenr } from './domains/moveEventHandler';
+import { addMouseUpEventLister, addMoveEventListener, MOUSE_MOVE_STATE_MAP, removeMoveEventListener } from './domains/moveEventHandler';
 import { IContext } from '../../interface/windowDialog';
 
 import updateWindowBorder, { SPOT_STATE } from './domains/useWindowBorder';
@@ -129,7 +129,7 @@ watch(dialogProp.value, (...args) => {
       windowBorder.value = updateWindowBorder(dialogProp, ZIndex);
       console.log('update windowBorder', windowBorder.value);
 
-      removeMoveEventListenr(changeDialogKey);
+      removeMoveEventListener(changeDialogKey);
     });
   }
 });
@@ -151,7 +151,7 @@ onMounted(() => {
     state.value = MOUSE_MOVE_STATE_MAP.MOVING;
 
     // 移动监听
-    const mouseMoveKey = addMoveEventListenr((ev) => {
+    const mouseMoveKey = addMoveEventListener((ev) => {
       // console.log('move ev', ev);
       if (state.value === MOUSE_MOVE_STATE_MAP.MOVING) {
         dialogProp.value.x = ev.x - clickX + baseX;
@@ -170,12 +170,11 @@ onMounted(() => {
       state.value = MOUSE_MOVE_STATE_MAP.READY;
 
       windowBorder.value = updateWindowBorder(dialogProp, ZIndex);
-      removeMoveEventListenr(mouseMoveKey);
+      removeMoveEventListener(mouseMoveKey);
     });
   });
 
   dialogRef.value.addEventListener('mousedown', (ev) => {
-
     // 获取z-index值，弹窗来到最顶部
     ZIndex.value = updateZIndex();
   });
@@ -185,34 +184,57 @@ onMounted(() => {
   console.log('spot list: ', spotList);
 
   spotList.forEach((spot) => {
-
     // spot
     spot.addEventListener('mousedown', (ev: MouseEvent) => {
       ZIndex.value = updateZIndex();
 
-      const globalX = dialogContainerRef.value.offsetLeft;
-      const globalY = dialogContainerRef.value.offsetTop;
-
-      console.log(ev, 'global (x, y)', globalX, globalY, dialogContainerRef.value);
+      console.log('start event:',ev);
       const spotX = ev.clientX, spotY = ev.clientY;
       const { x, y } = dialogProp.value;
       const [originWidth] = dialogProp.value.width.match(/[0-9]+/)
       const [originHeight] = dialogProp.value.height.match(/[0-9]+/)
       const state = +spot.getAttribute('data-state');
-      console.log('state: ', state, state === SPOT_STATE.LEFT_DOWN)
+      console.log('state: ', state)
       // 移动监听
-      const spotMoveKey = addMoveEventListenr((ev) => {
-        console.log('move spot ev', ev, state);
-        if (state === SPOT_STATE.LEFT_TOP) {
-          dialogProp.value = {
-            x: ev.clientX - spotX + x,
-            y: ev.clientY - spotY + y,
-            width: `${+originWidth + spotX - ev.clientX}px`,
-            height: `${+originHeight + spotY - ev.clientY}px`
-          };
-
-          console.log('dialogProp: ', dialogProp.value);
+      const spotMoveKey = addMoveEventListener((ev) => {
+        const curOffsetX = spotX - ev.clientX 
+        const curOffsetY = spotY - ev.clientY 
+        console.log('current event:', ev,curOffsetX,curOffsetY);
+        switch (state) {
+          case SPOT_STATE.LEFT_TOP:
+            dialogProp.value = {
+              x: x - curOffsetX,
+              y: y - curOffsetY,
+              width: `${+originWidth + curOffsetX}px`,
+              height: `${+originHeight + curOffsetY}px`
+            };
+          break;
+          case SPOT_STATE.RIGHT_TOP:
+            dialogProp.value = {
+              x,
+              y: y - curOffsetY,
+              width: `${+originWidth - curOffsetX}px`,
+              height: `${+originHeight + curOffsetY}px`
+            };
+          break;
+          case SPOT_STATE.LEFT_DOWN:
+            dialogProp.value = {
+              x: x - curOffsetX,
+              y,
+              width: `${+originWidth + curOffsetX}px`,
+              height: `${+originHeight - curOffsetY}px`
+            };
+          break;
+          case SPOT_STATE.RIGHT_DOWN:
+            dialogProp.value = {
+              x,
+              y,
+              width: `${+originWidth - curOffsetX}px`,
+              height: `${+originHeight - curOffsetY}px`
+            };
+          break;
         }
+          
         // if (state.value === MOUSE_MOVE_STATE_MAP.MOVING) {
         //   dialogProp.value.x = ev.x - clickX + baseX;
         //   dialogProp.value.y = ev.y - clickY + baseY;
@@ -223,12 +245,10 @@ onMounted(() => {
 
       // 设置mouseup监听
       addMouseUpEventLister((ev) => {
-        console.log('up ev', ev);
-        // baseX = dialogProp.value.x;
-        // baseY = dialogProp.value.y;
-        // state.value = MOUSE_MOVE_STATE_MAP.READY;
+        console.log('end event:', ev);
+        console.log('dialogProp:', dialogProp.value);
         windowBorder.value = updateWindowBorder(dialogProp, ZIndex);  
-        removeMoveEventListenr(spotMoveKey);
+        removeMoveEventListener(spotMoveKey);
       });
     });
   });
