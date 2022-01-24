@@ -1,8 +1,7 @@
-
 <template>
   <n-space vertical size="large">
-    <n-layout has-sider :style="{ height: `calc(${props.dialogProp.height} - 36px)`, }">
-      <n-layout-content style="overflow: hidden ;">
+    <n-layout has-sider :style="{ height: `calc(${props.dialogProp.height} - 36px)` }">
+      <n-layout-content style="overflow: hidden">
         <template v-if="nowComponent">
           <nowComponent v-bind="props"></nowComponent>
         </template>
@@ -27,74 +26,80 @@
   </n-space>
 </template>
 
-
 <script setup lang="ts">
-
-import { LogInOutline, HomeOutline, FolderOutline } from '@vicons/ionicons5';
-import { NIcon } from 'naive-ui';
-import { Component, h, ref, markRaw } from 'vue';
-import Home from '@/views/home/index.vue';
-import Login from '@/views/login/index.vue';
-import demo from '@/views/demo/index.vue';
+import { LogInOutline, HomeOutline, FolderOutline, LogoChrome } from "@vicons/ionicons5";
+import { NIcon } from "naive-ui";
+import { Component, h, ref, markRaw, computed } from 'vue';
+import Home from "@/views/home/index.vue";
+import Login from "@/views/login/index.vue";
+import demo from "@/views/demo/index.vue";
+import Browser from "@/views/Browser/index.vue";
 
 const props = defineProps({
   dialogProp: {
     type: Object,
   },
   context: {
-    type: Object
+    type: Object,
   },
   dialogItem: Object,
+  containerProp: Object,
 });
 
 const collapsed = ref(true);
 
-function renderIcon (icon) {
-  return () => h(NIcon, null, { default: () => h(icon) })
+
+
+function renderIcon(icon) {
+  return () => h(NIcon, null, { default: () => h(icon) });
 }
 const menu = [
   {
-    label: '主页',
-    key: '主页',
+    label: "主页",
+    key: "home",
     icon: renderIcon(HomeOutline),
     component: Home,
   },
   {
-    label: 'Login',
-    key: 'login',
+    label: "Login",
+    key: "login",
     icon: renderIcon(LogInOutline),
     component: markRaw(Login),
   },
   {
-    label: 'demo',
-    key: 'demo',
+    label: "demo",
+    key: "demo",
     icon: renderIcon(FolderOutline),
     component: demo,
-  }
+  },
+  {
+    label: "browser",
+    key: "browser",
+    icon: renderIcon(LogoChrome),
+    component: Browser,
+  },
 ];
 const getDefaultComponent = () => {
-  const key = props.dialogItem?.key;
+  const key = props.dialogItem?.appName;
   if (!key) return undefined;
-  
-  for(const item of menu) {
+
+  for (const item of menu) {
     if (item.key === key) {
       return item.component;
     }
   }
-  
 
   return undefined;
-}
+};
 
 const nowComponent = ref<Component>(getDefaultComponent());
 
 const handleUpdateValue = (key, menuOption) => {
   console.log(key, menuOption);
   nowComponent.value = menuOption.component;
-  console.log('update', nowComponent.value);
+  console.log("update", nowComponent.value);
   // router.push(key);
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,8 +109,8 @@ const handleUpdateValue = (key, menuOption) => {
   // background-size: cover;
   // padding: 10px;
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 
   > div {
     margin: 20px;

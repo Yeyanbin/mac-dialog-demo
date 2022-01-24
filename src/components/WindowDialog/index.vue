@@ -1,10 +1,10 @@
 <template>
   <div ref="dialogContainerRef">
-    <div ref="dialogRef" class="dialog" :style="{
+    <div ref="dialogRef" class="dialog" :style="({
       transform: `translate(${dialogProp.x}px, ${dialogProp.y}px)`,
       ...dialogProp,
       zIndex: ZIndex,
-    }"
+    })"
     @click="clickDialog">
       <div class="header" ref="headerRef">
         <!-- header -->
@@ -18,12 +18,11 @@
           <slot name="title">{{props.title}}</slot>
         </span>
       </div>
-      <div style="height: calc( 100% - 36px)">
+      <div style="height: calc(100% - 36px)">
         <slot :dialogProp="dialogProp" :context="getContext()">
           content
         </slot>      
       </div>
-
     </div>
     <div class="border-container">
       <div class="aline" style=""></div>
@@ -31,10 +30,10 @@
         <div 
           class="spot"
           :data-state="spot.state"
-          :style="{
+          :style="({
             transform: `translate(${spot.x}px, ${spot.y}px)`,
-            ...spot.style
-          }"></div>
+            ...spot.style,
+          })"></div>
       </template>
     </div>
   </div>
@@ -71,8 +70,25 @@ const minimize = (e) => {
   console.log('click minimize');
 };
 
+
+let last = undefined;
+
 const changeDisplay = (e) => {
-  console.log('click changeDisplay')
+  console.log('click changeDisplay', e, props.containerProp);
+  if (last) {
+    dialogProp.value = last;
+    last = undefined;
+  } else {
+    last = dialogProp.value;
+    dialogProp.value = {
+      // ...dialogProp.value,
+      x: 0,
+      y: 0,
+      height: props.containerProp.height,
+      width: props.containerProp.width,
+    };
+  }
+
 }
 
 const clickDialog = (e) => {
@@ -86,7 +102,11 @@ const props = defineProps({
   },
   dialogProp: {
     type: Object,
-    default: {},
+    default: () => ({}),
+  },
+  containerProp: {
+    type: Object,
+    default: () => ({}),
   },
   title: {
     type: String,

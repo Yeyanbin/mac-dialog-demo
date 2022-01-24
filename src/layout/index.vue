@@ -13,50 +13,50 @@ import { IWindowDialog } from '../interface/windowDialog';
 // import login from '../views/login/index.vue';
 
 const defaultWindowDialogList: IWindowDialog[] = [
-  {
-    state: WINDOW_DIALOG_STATE.NORMAL,
-    name: '123',
-    defaultDialogProp: {
-      x: 50, 
-      y: 50,
-      width: '600px'
-    },
-    key: 'login',
-    func: {
-      onCloseDialog: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onMinimize: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onClickDialog: (ev, {dialogProp}) => {
-        console.log('onClickDialog', ev, dialogProp);
-      },
-    }
-  },
+  // {
+  //   state: WINDOW_DIALOG_STATE.NORMAL,
+  //   name: '123',
+  //   defaultDialogProp: {
+  //     x: 50, 
+  //     y: 50,
+  //     width: '600px'
+  //   },
+  //   key: 'login',
+  //   func: {
+  //     onCloseDialog: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onMinimize: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onClickDialog: (ev, {dialogProp}) => {
+  //       console.log('onClickDialog', ev, dialogProp);
+  //     },
+  //   }
+  // },
 
 
-    {
-    state: WINDOW_DIALOG_STATE.NORMAL,
-    name: '浏览器',
-    defaultDialogProp: {
-      x: 100, 
-      y: 100,
-      width: '600px'
-    },
-    key: 'browser',
-    func: {
-      onCloseDialog: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onMinimize: (ev, { name }) => {
-        console.log('closeDialog', ev, name);
-      },
-      onClickDialog: (ev, {dialogProp}) => {
-        console.log('onClickDialog', ev, dialogProp);
-      },
-    }
-  },
+  //   {
+  //   state: WINDOW_DIALOG_STATE.NORMAL,
+  //   name: '浏览器',
+  //   defaultDialogProp: {
+  //     x: 100, 
+  //     y: 100,
+  //     width: '600px'
+  //   },
+  //   key: 'browser',
+  //   func: {
+  //     onCloseDialog: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onMinimize: (ev, { name }) => {
+  //       console.log('closeDialog', ev, name);
+  //     },
+  //     onClickDialog: (ev, {dialogProp}) => {
+  //       console.log('onClickDialog', ev, dialogProp);
+  //     },
+  //   }
+  // },
   // {
   //   state: WINDOW_DIALOG_STATE.NORMAL,
   //   title: '标题AAA',

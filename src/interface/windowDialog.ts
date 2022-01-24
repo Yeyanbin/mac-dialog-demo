@@ -15,6 +15,7 @@ export interface IContext {
 
 export interface IWindowDialog {
   key?: string;
+  appName: string;
   title?: string;
   name?: string;
   state: number;

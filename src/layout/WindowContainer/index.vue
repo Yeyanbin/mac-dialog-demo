@@ -1,26 +1,31 @@
 <template>
-  <div class="window-dialog-container">
+  <div class>
     <template v-for="(dialogItem, index) of windowDialogList" :key="dialogItem.key">
       <WindowDialog
         :dialog-prop="dialogItem.defaultDialogProp"
+        :container-Prop="containerProp"
         :name="dialogItem.name"
         :index="index"
         :title="dialogItem.title"
         v-on="handleDialogFunc(dialogItem.func, index)"
       >
         <template v-slot="scoped">
-          <Browser v-if="dialogItem.key === 'browser'"></Browser>
-          <Menu v-else :is="dialogItem.component" :dialogItem="dialogItem" v-bind="scoped"></Menu>
+          <Menu
+            :is="dialogItem.component"
+            :container-Prop="containerProp"
+            :dialogItem="dialogItem"
+            v-bind="scoped"
+          ></Menu>
         </template>
       </WindowDialog>
     </template>
   </div>
-  <div class="window-dialog-top">
+  <div class="window-dialog-container" style="width: 100vw;height: 100vh;" ref="windowDialogContainerRef">
     <div class="window-dialog-operator">
       <div>窗口数量：{{ windowDialogList.length }}</div>
       <div class="operator-button-group">
         <!-- <n-button @click="addWindowDialog">增加窗口</n-button> -->
-        <n-button @click="addWindowDialog" circle size="tiny" #icon>
+        <n-button @click="() => addWindowDialog(props.homePageName)" circle size="tiny" #icon>
           <n-icon>
             <AddCircleOutline />
           </n-icon>
@@ -34,13 +39,12 @@
 <script setup lang="ts">
 import WindowDialog from '@/components/WindowDialog/index.vue';
 import useWindowDialogList, { WINDOW_DIALOG_STATE } from './domains/useWindowDialogList';
-import { markRaw, shallowRef } from 'vue';
+import { computed, markRaw, onMounted, ref, shallowRef } from 'vue';
 import Menu from '../menu.vue';
+import useDomObserver from '../../libs/@yubi/y-hooks/useDomObserver';
 
 import { AddCircleOutline } from '@vicons/ionicons5';
-import { IWindowDialog } from '../../interface/windowDialog';
-
-import Browser from '@/application/Browser/index.vue';
+import { IDialogProp, IWindowDialog } from '../../interface/windowDialog';
 
 // 这里用markRaw估计是在setup里才需要的
 // console.log('login ', markRaw(login));
@@ -53,8 +57,44 @@ const props = defineProps({
   baseComponents: {
     type: Object,
     default: undefined,
+  },
+  dialogProp: {
+    type: Object,
+    default: () => undefined
+  },
+  homePageName: {
+    type: String,
+    default: 'login'
   }
-})
+});
+
+const windowDialogContainerRef = ref<HTMLDivElement>();
+
+onMounted(() => {
+  const { watch } = useDomObserver();
+  console.log('windowDialogContainerRef', windowDialogContainerRef)
+  watch(windowDialogContainerRef.value);
+});
+
+
+const containerProp = computed(() => {
+
+  const dialogProp: IDialogProp = props.dialogProp;
+  if (dialogProp) {
+    return {
+      height: dialogProp.height,
+      width: dialogProp.width,
+    }
+  } else {
+    if (windowDialogContainerRef.value) {
+      console.log('window dialog container', windowDialogContainerRef.value)
+      return {
+        height: windowDialogContainerRef.value.style.height,
+        width: windowDialogContainerRef.value.style.width,
+      }
+    }
+  }
+});
 
 document.addEventListener('selectstart', (ev) => {
   console.log('select start')
@@ -71,7 +111,7 @@ const {
 </script>
 
 <style lang="scss" scoped>
-.window-dialog-top {
+.window-dialog-container {
   position: relative;
   bottom: 0px;
   width: 100vw;

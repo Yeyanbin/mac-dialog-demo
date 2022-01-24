@@ -20,11 +20,12 @@ const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
   });
   const windowDialogList = ref<Array<IWindowDialog>>(defaultWindowDialogList);
 
-  const addWindowDialog = () => {
+  const addWindowDialog = (appName: string) => {
     const size = windowDialogList.value.length + 1;
 
     windowDialogList.value.push({
       key: `___default_key_${dialogCount.value}`,
+      appName,
       state: WINDOW_DIALOG_STATE.NORMAL,
       defaultDialogProp: {
         x: 10 * size + dialogCount.value * 10,
