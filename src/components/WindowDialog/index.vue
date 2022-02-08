@@ -1,10 +1,10 @@
 <template>
   <div ref="dialogContainerRef">
-    <div ref="dialogRef" class="dialog" :style="({
+    <div ref="dialogRef" class="dialog" :style="Object.assign({
       transform: `translate(${dialogProp.x}px, ${dialogProp.y}px)`,
       ...dialogProp,
       zIndex: ZIndex,
-    })"
+    }, dialogStateStyle)"
     @click="clickDialog">
       <div class="header" ref="headerRef">
         <!-- header -->
@@ -47,6 +47,7 @@ import { addMouseUpEventLister, addMoveEventListener, MOUSE_MOVE_STATE_MAP, remo
 import { IContext } from '../../interface/windowDialog';
 
 import updateWindowBorder, { SPOT_STATE } from './domains/useWindowBorder';
+import useDialogState, { DIALOG_STATE } from './domains/useDialogState';
 
 const headerRef = ref<HTMLElement>();
 const dialogRef = ref<HTMLElement>();
@@ -62,12 +63,15 @@ const getContext = (): IContext  => {
   }
 }
 
+const { updateDialogState, dialogStateStyle } = useDialogState();
+
 const closeDialog = (e: MouseEvent) => {
   emit('closeDialog', e, getContext());
 };
 
 const minimize = (e) => {
   console.log('click minimize');
+  updateDialogState(DIALOG_STATE.MINIMIZE);
 };
 
 
@@ -78,6 +82,7 @@ const changeDisplay = (e) => {
   if (last) {
     dialogProp.value = last;
     last = undefined;
+    updateDialogState(DIALOG_STATE.NORMAL);
   } else {
     last = dialogProp.value;
     dialogProp.value = {
@@ -87,6 +92,7 @@ const changeDisplay = (e) => {
       height: props.containerProp.height,
       width: props.containerProp.width,
     };
+    updateDialogState(DIALOG_STATE.FULL_SCREEN);
   }
 
 }
