@@ -1,15 +1,21 @@
 <template>
-  <h2>this is DEMO page!</h2>
-  <base-form 
+  <h2>this is yubiFormDemo page!</h2>
+  <yubi-form 
     v-bind="{
+      customComponents,
       content,
       state,
     }">
-  </base-form>  
+  </yubi-form>  
 </template>
 
 <script setup lang="ts">
-import baseForm from '../../components/baseForm/index.vue';
+import yubiForm from '../../../components/yubiForm/index.vue';
+import test from './test.vue';
+
+const customComponents = {
+  test,
+};
 
 const content = [
   {

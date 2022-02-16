@@ -1,15 +1,19 @@
 <template>
-  <h2>this is DEMO page!</h2>
-  <base-form 
-    v-bind="{
-      content,
-      state,
-    }">
-  </base-form>  
+  <div>
+    <n-form :model="formValue"     ref="formRef" inline>
+      <n-form-item v-for="item of formContent" v-bind="item">
+        <component :is="item.component" v-bind="item"></component>
+      </n-form-item>
+    </n-form>
+  </div>
 </template>
 
 <script setup lang="ts">
-import baseForm from '../../components/baseForm/index.vue';
+import { computed } from '@vue/reactivity';
+import { ref } from 'vue';
+import useExpressionCompute from '../../libs/schemaHooks/useExpressionCompute';
+import useFormContent from '../../libs/schemaHooks/useFormContent';
+
 
 const content = [
   {
@@ -109,8 +113,13 @@ const state = {
   "gender": 1
 }
 
+
+const defaultForm = {};
+
+const formContent = computed(() => {
+  console.log()
+  return useFormContent(content, useExpressionCompute(state, defaultForm))
+})
+
+const formValue = ref(defaultForm);
 </script>
-
-<style scoped>
-
-</style>

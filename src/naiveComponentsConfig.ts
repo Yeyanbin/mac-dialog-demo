@@ -19,8 +19,12 @@ import {
   NSpace,
   NTabs,
   NStatistic,
+
+  NGrid,
+  NGridItem,
   NLayout,
   NLayoutSider,
+
   // form component
   NForm,
   NFormItem,
@@ -79,6 +83,12 @@ export default create({
     NLayoutHeader,
     NConfigProvider,
 
+    NGrid,
+    NGridItem,
+    NLayout,
+    NLayoutSider,
+    NLayoutContent,
+    NConfigProvider,
   ]
 });
 
