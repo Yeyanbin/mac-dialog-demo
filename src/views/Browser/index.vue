@@ -46,7 +46,10 @@ function changeHistory(v: number) {
 onMounted(() => {
   // watch(browserRef.value)
   console.log(browserRef);
-  // browserRef.value.onload
+  browserRef.value.onload = (ev) => {
+    console.log('browser onloading', ev);
+    console.log('browser', browserRef.value.contentWindow.location);
+  }
 });
 
 const log = (...arg) => {
