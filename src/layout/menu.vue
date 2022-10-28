@@ -35,6 +35,10 @@ import Login from "@/views/login/index.vue";
 import demo from "@/views/demo/index.vue";
 import Browser from "@/views/Browser/index.vue";
 
+// schema
+import FormDemo from '@/views/schema/yubiFormDemo/index.vue';
+
+
 const props = defineProps({
   dialogProp: {
     type: Object,
@@ -78,6 +82,18 @@ const menu = [
     icon: renderIcon(LogoChrome),
     component: Browser,
   },
+  {
+    label: "schema",
+    key: "schema",
+    icon: renderIcon(LogoChrome),
+    children: [
+      {
+        label: "formDemo",
+        key: "formDemo",
+        component: FormDemo,
+      }
+    ]
+  }
 ];
 const getDefaultComponent = () => {
   const key = props.dialogItem?.appName;

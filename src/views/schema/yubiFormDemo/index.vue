@@ -26,10 +26,7 @@ const content = [
       type: "string"
     },
     layout: {
-      span: {
-        value: "3",
-        type: "number",
-      }
+      span: "2 400:3 600:3 800:2",
     },
     path: "remark"
   },
@@ -38,10 +35,7 @@ const content = [
     label: "选择歌曲",
     path: "song",
     layout: {
-      span: {
-        value: "3",
-        type: "number",
-      }
+      span: "5 400:5 600:3 800:2",
     },
     options: [
       {
@@ -81,10 +75,7 @@ const content = [
     label: "性别",
     path: "gender",
     layout: {
-      span: {
-        value: "1",
-        type: "number",
-      }
+      span: "10 400:5 600:2 800:2",
     },
     options: [
       {
@@ -101,6 +92,9 @@ const content = [
     show: {
       type: 'boolean',
       expression: '{gender} = 1'
+    },
+    layout: {
+      span: " 10 400:5 600:2 800:2",
     },
     component: "NInput",
     label: "薪资多少",
