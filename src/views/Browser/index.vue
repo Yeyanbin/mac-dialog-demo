@@ -48,7 +48,7 @@ onMounted(() => {
   console.log(browserRef);
   browserRef.value.onload = (ev) => {
     console.log('browser onloading', ev);
-    console.log('browser', browserRef.value.contentWindow.location);
+    // console.log('browser', (browserRef.value as any).contentWindow.location);
   }
 });
 
