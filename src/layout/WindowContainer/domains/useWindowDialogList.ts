@@ -20,7 +20,7 @@ const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
   });
   const windowDialogList = ref<Array<IWindowDialog>>(defaultWindowDialogList);
 
-  const addWindowDialog = (appName: string) => {
+  const addWindowDialog = (appName: string, options = {}) => {
     const size = windowDialogList.value.length + 1;
 
     windowDialogList.value.push({
@@ -30,7 +30,8 @@ const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
       defaultDialogProp: {
         x: 10 * size + dialogCount.value * 10,
         y: 50 * (size % 8 + 1),
-      }
+      },
+      ...options
     });
     dialogCount.value = dialogCount.value + 1;
   };

@@ -22,6 +22,7 @@ export interface IWindowDialog {
   defaultDialogProp?: IDialogProp;
   func?: IDialogHook;
   component?: Component;
+  isEasy?: boolean;
 }
 
 export interface IDialogHook {

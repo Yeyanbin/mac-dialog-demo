@@ -1,23 +1,36 @@
 <template>
   <div class>
     <template v-for="(dialogItem, index) of windowDialogList" :key="dialogItem.key">
-      <WindowDialog
-        :dialog-prop="dialogItem.defaultDialogProp"
-        :container-Prop="containerProp"
-        :name="dialogItem.name"
-        :index="index"
-        :title="dialogItem.title"
-        v-on="handleDialogFunc(dialogItem.func, index)"
-      >
-        <template v-slot="scoped">
-          <Menu
-            :is="dialogItem.component"
-            :container-Prop="containerProp"
-            :dialogItem="dialogItem"
-            v-bind="scoped"
-          ></Menu>
-        </template>
-      </WindowDialog>
+      <template v-if="!dialogItem.isEasy">
+        <WindowDialog
+          :dialog-prop="dialogItem.defaultDialogProp"
+          :container-Prop="containerProp"
+          :name="dialogItem.name"
+          :index="index"
+          :title="dialogItem.title"
+          v-on="handleDialogFunc(dialogItem.func, index)"
+        >
+          <template v-slot="scoped">
+            <Menu
+              :is="dialogItem.component"
+              :container-Prop="containerProp"
+              :dialogItem="dialogItem"
+              v-bind="scoped"
+            ></Menu>
+          </template>
+        </WindowDialog>
+      </template>
+      <template v-else>
+        <WindowDialog
+          :dialog-prop="dialogItem.defaultDialogProp"
+          :container-Prop="containerProp"
+          :name="dialogItem.name"
+          :index="index"
+          :title="dialogItem.title"
+          v-on="handleDialogFunc(dialogItem.func, index)">
+          <component :is="dialogItem.component"></component>
+        </WindowDialog>
+      </template>
     </template>
   </div>
   <div class="window-dialog-container" style="width: 100vw;height: 100vh;" ref="windowDialogContainerRef">
@@ -32,7 +45,9 @@
         </n-button>
       </div>
     </div>
-    <div class="window-dialog-menu"></div>
+    <div class="window-dialog-menu">
+      <AppMenu :containerProp="containerProp" @addApplication="addWindowDialog"></AppMenu>
+    </div>
   </div>
 </template>
 
@@ -46,6 +61,7 @@ import useDomObserver from '../../libs/@yubi/y-hooks/useDomObserver';
 import { AddCircleOutline } from '@vicons/ionicons5';
 import { IDialogProp, IWindowDialog } from '../../interface/windowDialog';
 
+import AppMenu from '../../applications/appMenu/index.vue';
 // 这里用markRaw估计是在setup里才需要的
 // console.log('login ', markRaw(login));
 
@@ -96,11 +112,11 @@ const containerProp = computed(() => {
   }
 });
 
-document.addEventListener('selectstart', (ev) => {
-  console.log('select start')
-  ev.preventDefault();
-  return false;
-})
+// document.addEventListener('selectstart', (ev) => {
+//   console.log('select start')
+//   ev.preventDefault();
+//   return false;
+// })
 
 const {
   windowDialogList,
