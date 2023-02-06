@@ -27,12 +27,10 @@ const addApplication = (applicationName) => {
   emit('addApplication', applicationName, {
     component: appMap[applicationName],
     isEasy: true,
-    state: DIALOG_STATE.FULL_SCREEN,
+    state: DIALOG_STATE.NORMAL,
     defaultDialogProp: {
-      x: 0,
-      y: 0,
-      height: props.containerProp.height,
-      width: props.containerProp.width,
+      height: '800px',
+      width: '1000px',
     }
   });
 };

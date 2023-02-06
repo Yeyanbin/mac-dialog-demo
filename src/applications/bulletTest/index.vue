@@ -5,6 +5,7 @@ import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
 import {StatsSystem} from '@eva/plugin-stats';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
+import { getUrlPrefix } from '../../utils/image';
 
 onMounted(() => {
   resource.addResource([
@@ -14,7 +15,7 @@ onMounted(() => {
       src: {
         image: {
           type: 'png',
-          url: '/bunny.png'
+          url: getUrlPrefix() + '/bunny.png'
             // 'https://gw.alicdn.com/tfs/TB1DNzoOvb2gK0jSZK9XXaEgFXa-658-1152.webp',
         },
       },

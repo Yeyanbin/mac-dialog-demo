@@ -7,10 +7,11 @@ import { StatsSystem } from '@eva/plugin-stats';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { Sprite, SpriteSystem } from '@eva/plugin-renderer-sprite';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
+import { getUrlPrefix } from '../../utils/image';
 
 onMounted(() => {
 
-  const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
+  const canvas = document.querySelector('#shoot') as HTMLCanvasElement;
   resource.addResource([
     {
       name: 'imageName',
@@ -18,7 +19,7 @@ onMounted(() => {
       src: {
         image: {
           type: 'png',
-          url: '/bunny.png'
+          url: getUrlPrefix() + '/bunny.png',
           // 'https://gw.alicdn.com/tfs/TB1DNzoOvb2gK0jSZK9XXaEgFXa-658-1152.webp',
         },
       },
@@ -30,7 +31,7 @@ onMounted(() => {
       src: {
         image: {
           type: 'png',
-          url: '/carrot.png'
+          url: getUrlPrefix() + '/carrot.png'
         },
       },
       preload: true,
@@ -68,8 +69,8 @@ onMounted(() => {
   game.addSystem(new StatsSystem({
     show: true, // 这里设置是否显示，设为 false 不会运行。
     style: { // 这里到数值全部都是宽度到百分比 vw 单位
-      x: 0,
-      y: 8,
+      x: 90,
+      y: 0,
       width: 8,
       height: 5
     }
@@ -221,6 +222,6 @@ onMounted(() => {
 
 <template>
   <div ref="gameContainer">
-    <canvas id="canvas"></canvas>
+    <canvas id="shoot"></canvas>
   </div>
 </template>
