@@ -105,7 +105,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="gameContainer">
+  <div>
     <canvas id="canvas" ></canvas>
   </div>
 </template>
