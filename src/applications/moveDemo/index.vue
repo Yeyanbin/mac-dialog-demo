@@ -6,6 +6,7 @@ import { Img, ImgSystem } from '@eva/plugin-renderer-img';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
 import { getDistance, rotateToPoint } from '../utils/base';
+import useMonster from '../hooks/useMonster';
 
 onMounted(() => {
   const canvas = document.querySelector('#move') as HTMLCanvasElement;
@@ -60,40 +61,15 @@ onMounted(() => {
 
   game.scene.addChild(bear);
 
-
-  let bearPosition = {
-    offsetX: 0,
-    offsetY: 0,
-  };
-  const bulletSpeed = 5;
-  let isMove = false;
+  const bearMonster = useMonster(bear, game);
 
   canvas.addEventListener('click', (ev) => {
     ev.stopPropagation()
   });
   canvas.addEventListener('mousedown', (ev) => {
+    bearMonster.move(ev.offsetX, ev.offsetY);
     ev.stopPropagation()
-    isMove = true;
-    const { offsetX, offsetY } = ev;
-    bearPosition = { offsetX, offsetY };
-    bear.transform.rotation = rotateToPoint(offsetX, offsetY, bear.transform.position.x, bear.transform.position.y);
   });
-
-
-
-  game.ticker.add((e: UpdateParams)=>{
-    if (isMove) {
-      const position = bear.transform.position;
-      position.x += Math.cos(bear.transform.rotation) * bulletSpeed;
-      position.y += Math.sin(bear.transform.rotation) * bulletSpeed;
-
-      if (
-        getDistance(position.x + Math.cos(bear.transform.rotation) * bulletSpeed, position.y + Math.sin(bear.transform.rotation) * bulletSpeed, bearPosition.offsetX, bearPosition.offsetY)
-      > getDistance(position.x, position.y, bearPosition.offsetX, bearPosition.offsetY)) {
-        isMove = false;
-      }
-    }
-  })
 })
 
 </script>
