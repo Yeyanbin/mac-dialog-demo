@@ -3,7 +3,6 @@ import { onMounted } from 'vue';
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
-import {StatsSystem} from '@eva/plugin-stats';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
 
@@ -16,7 +15,6 @@ onMounted(() => {
         image: {
           type: 'png',
           url: getUrlPrefix() + '/bunny.png'
-            // 'https://gw.alicdn.com/tfs/TB1DNzoOvb2gK0jSZK9XXaEgFXa-658-1152.webp',
         },
       },
       preload: true,
@@ -37,16 +35,6 @@ onMounted(() => {
       }),
     ],
   });
-
-  game.addSystem(new StatsSystem({
-    show: true, // 这里设置是否显示，设为 false 不会运行。
-    style: { // 这里到数值全部都是宽度到百分比 vw 单位
-      x: 0,
-      y: 8,
-      width: 8,
-      height: 5
-    }
-  }));
 
   const image = new GameObject('image', {
     size: { width: 30, height: 40 },
