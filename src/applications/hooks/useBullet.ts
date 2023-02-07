@@ -1,5 +1,5 @@
 
-import { IVector } from './useVector';
+import { IVector } from '../../libs/@yubi/game/hook/useVector';
 export type TBulletType = 'direct' | 'range';
 export type TDemageType = 'ad' | 'ap';
 

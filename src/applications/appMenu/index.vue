@@ -3,6 +3,9 @@
 
 import bulletTestVue from '../bulletTest/index.vue';
 import shootDemoVue from '../shootDemo/index.vue';
+import autoShootDemoVue from '../autoShootDemo/index.vue';
+import moveDemoVue from '../moveDemo/index.vue';
+import keyMoveDemo from '../keyMoveDemo/index.vue';
 
 import { CashOutline as CashIcon } from '@vicons/ionicons5'
 
@@ -19,21 +22,37 @@ const props = defineProps({
 const emit = defineEmits(['addApplication']);
 
 const appMap = {
-  bulletTestVue: markRaw(bulletTestVue),
-  shootDemoVue: markRaw(shootDemoVue)
+  bulletTestVue: {
+    component: markRaw(bulletTestVue),
+    title: '追随鼠标移动的demo'
+  },
+  shootDemoVue: {
+    component: markRaw(shootDemoVue),
+    title: '点击射击demo，请单击，会往鼠标方向发射一个萝卜'
+  },
+  autoShootDemoVue: {
+    component: markRaw(autoShootDemoVue),
+    title: '自动射击demo，每隔一秒，会往鼠标方向发射一个萝卜'
+  },
+  moveDemoVue: {
+    component: markRaw(moveDemoVue),
+    title: '点击移动demo，请点击任意位置，小熊会往该处移动'
+  },
+  keyMoveDemo: {
+    component: markRaw(keyMoveDemo),
+    title: '通过键盘的上下左右方向键来控制小熊的移动'
+  },
 }
 
 const addApplication = (applicationName) => {
   emit('addApplication', applicationName, {
-    component: appMap[applicationName],
     isEasy: true,
-    state: DIALOG_STATE.FULL_SCREEN,
+    state: DIALOG_STATE.NORMAL,
     defaultDialogProp: {
-      x: 0,
-      y: 0,
-      height: props.containerProp.height,
-      width: props.containerProp.width,
-    }
+      height: '800px',
+      width: '1000px',
+    },
+    ...appMap[applicationName],
   });
 };
 </script>
@@ -58,9 +77,43 @@ const addApplication = (applicationName) => {
         </template>
       </n-button>
       <div>
-        追随射击Demo
+        点击射击Demo
       </div>
     </div>
+
+    <div class="icon-wrap">
+      <n-button color="#8a2be2" circle @click="addApplication('autoShootDemoVue')">
+        <template #icon>
+          <n-icon><cash-icon /></n-icon>
+        </template>
+      </n-button>
+      <div>
+        自动射击Demo
+      </div>
+    </div>
+
+    <div class="icon-wrap">
+      <n-button color="#8a2be2" circle @click="addApplication('moveDemoVue')">
+        <template #icon>
+          <n-icon><cash-icon /></n-icon>
+        </template>
+      </n-button>
+      <div>
+        点击移动Demo
+      </div>
+    </div>
+
+    <div class="icon-wrap">
+      <n-button color="#8a2be2" circle @click="addApplication('keyMoveDemo')">
+        <template #icon>
+          <n-icon><cash-icon /></n-icon>
+        </template>
+      </n-button>
+      <div>
+        键盘移动demo
+      </div>
+    </div>
+
   </div>  
 </template>
 

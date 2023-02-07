@@ -27,11 +27,13 @@ const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
       key: `___default_key_${dialogCount.value}`,
       appName,
       state: WINDOW_DIALOG_STATE.NORMAL,
+      ...options,
+
       defaultDialogProp: {
         x: 10 * size + dialogCount.value * 10,
         y: 50 * (size % 8 + 1),
+        ...(options as any).defaultDialogProp,
       },
-      ...options
     });
     dialogCount.value = dialogCount.value + 1;
   };
