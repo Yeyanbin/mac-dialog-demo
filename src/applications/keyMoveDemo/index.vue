@@ -36,7 +36,6 @@ onMounted(() => {
       }),
       new ImgSystem(),
       new EventSystem({
-      // moveWhenInside: true // 代表只有在元素内部才会执行move事件，默认为false
       }),
     ],
   });
@@ -72,13 +71,6 @@ onMounted(() => {
       bearMonster.stopMove();
     }
   });
-  // canvas.addEventListener('click', (ev) => {
-  //   ev.stopPropagation()
-  // });
-  // canvas.addEventListener('mousedown', (ev) => {
-  //   // bearMonster.moveToPosition(ev.offsetX, ev.offsetY);
-  //   ev.stopPropagation()
-  // });
 })
 
 </script>

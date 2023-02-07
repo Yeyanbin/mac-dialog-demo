@@ -7,7 +7,7 @@ import autoShootDemoVue from '../autoShootDemo/index.vue';
 import moveDemoVue from '../moveDemo/index.vue';
 import keyMoveDemo from '../keyMoveDemo/index.vue';
 import p2Demo from '../p2Demo/index.vue';
-
+import randomShootVue from '../randomShootDemo/index.vue';
 
 import { CashOutline as CashIcon } from '@vicons/ionicons5'
 
@@ -54,6 +54,11 @@ const appMap = {
     component: markRaw(p2Demo),
     title: '通过键盘的上下左右方向键来控制小熊P1的移动，P2是wasd',
     iconName: '双人移动demo',
+  },
+  randomShoot: {
+    component: markRaw(randomShootVue),
+    title: '通过键盘的上下左右方向键来控制小熊的移动，会往随机方向射击',
+    iconName: '随机射击demo',
   },
 }
 

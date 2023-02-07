@@ -14,3 +14,18 @@ export const rotateToPoint = (mx, my, px, py) => {
     const angle = Math.atan2(dist_Y, dist_X);
     return angle;
 }
+
+const max = 3.141592653589793 + 3.141592653589793;
+
+export const getRandomRotate = () => {
+    const random = Math.random();
+    return random * max - 3.141592653589793;
+}
+
+
+export const getShootStartPosition = ({ x, y }, rotation: number, dis: number) => {
+    return {
+        x: Math.cos(rotation) * dis + x,
+        y: Math.sin(rotation) * dis + y
+    }
+}
