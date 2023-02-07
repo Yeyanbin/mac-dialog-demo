@@ -5,11 +5,15 @@ import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
+import { getDistance, rotateToPoint } from '../utils/base';
+import useMonster from '../hooks/useMonster';
 
 onMounted(() => {
+  const canvas = document.querySelector('#move') as HTMLCanvasElement;
+
   resource.addResource([
     {
-      name: 'imageName',
+      name: 'bearImg',
       type: RESOURCE_TYPE.IMAGE,
       src: {
         image: {
@@ -24,9 +28,9 @@ onMounted(() => {
   const game = new Game({
     systems: [
       new RendererSystem({
-        canvas: document.querySelector('#canvas'),
+        canvas,
         width: 1000,
-        height: 1000,
+        height: 800,
         backgroundColor: 0x999999
       }),
       new ImgSystem(),
@@ -36,9 +40,9 @@ onMounted(() => {
     ],
   });
 
-  const image = new GameObject('image', {
+  const bear = new GameObject('image', {
     size: { width: 30, height: 40 },
-    origin: { x: 0, y: 0 },
+    origin: { x: 0.5, y: 0.5 },
     position: {
       x: 500,
       y: 500,
@@ -49,51 +53,29 @@ onMounted(() => {
     },
   });
 
-  image.addComponent(
+  bear.addComponent(
     new Img({
-      resource: 'imageName',
+      resource: 'bearImg',
     })
   );
 
-  game.scene.addChild(image);
+  game.scene.addChild(bear);
 
-  const evt = image.addComponent(
-    new Event({
-      // 使用这个属性设置交互事件可以触发的区域，骨骼动画有所变差，可以临时在当前游戏对象下添加一个同类型同属性的Graphic查看具体点击位置。
-      hitArea: {
-        type: HIT_AREA_TYPE.Rect,
-        style: {
-          x: 0,
-          y: 0,
-          width: 30,
-          height: 40
-        },
-      },
-    }),
-  );
+  const bearMonster = useMonster(bear, game);
 
-  let run: () => void = undefined
-
-  evt.on('touchmove', e => {
-    // console.log('touchmove', e)
-    run = () => {
-      // console.log('run', e)
-      const transform = e.gameObject.transform;
-      transform.position = e.data.position;
-    }
+  canvas.addEventListener('click', (ev) => {
+    ev.stopPropagation()
   });
-
-  game.ticker.add((e: UpdateParams)=>{
-    // console.log(e)
-    run && run();
-    run = undefined;
-  })
+  canvas.addEventListener('mousedown', (ev) => {
+    bearMonster.moveToPosition(ev.offsetX, ev.offsetY);
+    ev.stopPropagation()
+  });
 })
 
 </script>
 
 <template>
   <div>
-    <canvas id="canvas" ></canvas>
+    <canvas id="move" ></canvas>
   </div>
 </template>

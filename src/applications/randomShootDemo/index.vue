@@ -8,19 +8,21 @@ import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { Sprite, SpriteSystem } from '@eva/plugin-renderer-sprite';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
 import { getUrlPrefix } from '../../utils/image';
+import { getRandomRotate, getShootStartPosition } from '../utils/base';
+import useKeyRotation from '../hooks/useKeyRotation';
+import useMonster from '../hooks/useMonster';
 
 onMounted(() => {
 
-  const canvas = document.querySelector('#shoot') as HTMLCanvasElement;
+  const canvas = document.querySelector('#autoShoot') as HTMLCanvasElement;
   resource.addResource([
-    {
-      name: 'imageName',
+  {
+      name: 'bearImg',
       type: RESOURCE_TYPE.IMAGE,
       src: {
         image: {
           type: 'png',
-          url: getUrlPrefix() + '/bunny.png',
-          // 'https://gw.alicdn.com/tfs/TB1DNzoOvb2gK0jSZK9XXaEgFXa-658-1152.webp',
+          url: getUrlPrefix() + '/bunny.png'
         },
       },
       preload: true,
@@ -36,25 +38,14 @@ onMounted(() => {
       },
       preload: true,
     },
-    {
-      name: 'spriteName',
-      type: RESOURCE_TYPE.SPRITE,
-      src: {
-        image: {
-          type: 'png',
-          url: 'https://gw.alicdn.com/tfs/TB1ONLxOAL0gK0jSZFAXXcA9pXa-900-730.png'
-        },
-      },
-      preload: true
-    }
   ]);
 
   const game = new Game({
     systems: [
       new RendererSystem({
-        canvas: canvas,
+        canvas,
         width: 1000,
-        height: 1000,
+        height: 800,
         backgroundColor: 0x1099bb
       }),
       new ImgSystem(),
@@ -66,17 +57,8 @@ onMounted(() => {
     ],
   });
 
-  game.addSystem(new StatsSystem({
-    show: true, // 这里设置是否显示，设为 false 不会运行。
-    style: { // 这里到数值全部都是宽度到百分比 vw 单位
-      x: 90,
-      y: 0,
-      width: 8,
-      height: 5
-    }
-  }));
 
-  const image = new GameObject('image', {
+  const bear = new GameObject('image', {
     size: { width: 30, height: 40 },
     origin: { x: 0.5, y: 0.5 },
     position: {
@@ -89,24 +71,28 @@ onMounted(() => {
     },
   });
 
-  image.addComponent(
+  bear.addComponent(
     new Img({
-      resource: 'imageName',
+      resource: 'bearImg',
     })
   );
 
-  game.scene.addChild(image);
+  game.addSystem(new StatsSystem({
+    show: true, // 这里设置是否显示，设为 false 不会运行。
+    style: { // 这里到数值全部都是宽度到百分比 vw 单位
+      x: 90,
+      y: 0,
+      width: 8,
+      height: 5
+    }
+  }));
 
-  canvas.addEventListener('mousedown', (ev) => {
-    ev.stopPropagation()
-    console.log('mousedown', ev);
-    const { offsetX, offsetY } = ev;
-    // image.transform.rotation = 
-    shoot(rotateToPoint(offsetX, offsetY, image.transform.position.x, image.transform.position.y), image.transform.position);
-  });
+  game.scene.addChild(bear);
 
   const bulletSpeed = 2;
   const bullets: GameObject[] = [];
+  const firingRate = 50;
+  let lastShootTime = Date.now();
 
   function shoot(rotation, startPosition) {
     const bulletsGameObj = new GameObject('gameObject1', {
@@ -124,11 +110,9 @@ onMounted(() => {
     game.scene.addChild(bulletsGameObj);
   }
 
-
   canvas.addEventListener('mousemove', (ev) => {
     ev.stopPropagation()
-    const { offsetX, offsetY } = ev;
-    image.transform.rotation = rotateToPoint(image.transform.position.x, image.transform.position.y, offsetX, offsetY);
+    // const { offsetX, offsetY } = ev;
   });
 
 
@@ -137,15 +121,7 @@ onMounted(() => {
   });
 
 
-  const rotateToPoint = (mx, my, px, py) => {
-    const dist_Y = my - py;
-    const dist_X = mx - px;
-    const angle = Math.atan2(dist_Y, dist_X);
-    return angle;
-  }
-
   game.ticker.add((e: UpdateParams) => {
-    // console.log(text)
     (text.components[1] as any).text = `当前子弹数量为：${bullets.length}`
     for (let b = bullets.length - 1; b >= 0; b--) {
       // console.log(bullets[b], b)
@@ -164,13 +140,19 @@ onMounted(() => {
         })
       }
     }
+
+    if (Date.now() - lastShootTime > firingRate) {
+      const randomRotation = getRandomRotate()
+      shoot(randomRotation, getShootStartPosition(bear.transform.position, randomRotation, 40));
+      lastShootTime = Date.now();
+    }
     // console.log(bullets)
   });
 
   const text = new GameObject('text', {
     position: {
       x: 200,
-      y: 200
+      y: 50
     },
     origin: {
       x: 0.5,
@@ -207,7 +189,77 @@ onMounted(() => {
     })
   )
 
+  const p2 = new GameObject('image', {
+    size: { width: 30, height: 40 },
+    origin: { x: 0.5, y: 0.5 },
+    position: {
+      x: 300,
+      y: 500,
+    },
+    anchor: {
+      x: 0,
+      y: 0,
+    },
+  });
+  p2.addComponent(
+    new Img({
+      resource: 'bearImg',
+    })
+  );
+  const p2Monster = useMonster(p2, game);
+  const p2KeyRotation = useKeyRotation();
+
+  const p2Name = new GameObject('text', {
+    position: {
+      x: 0,
+      y: 30
+    },
+    origin: {
+      x: 0.5,
+      y: 0.5
+    },
+    anchor: {
+      x: 0.5,
+      y: 0.5
+    }
+  })
+  p2Name.addComponent(
+    new Text({
+      text: '瑟瑟发抖的你',
+      style: {
+        fontSize: 16,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+      }
+    })
+  );
+  p2.addChild(p2Name);
+
   game.scene.addChild(text);
+  game.scene.addChild(p2);
+
+  const bearMonster = useMonster(bear, game);
+  
+  const bearKeyRotation = useKeyRotation({
+    up: 'w',
+    down: 's',
+    left: 'a',
+    right: 'd'
+  });
+  
+  game.ticker.add((e: UpdateParams)=>{
+    if ((bearMonster.monster.moveRotation = bearKeyRotation.getKeyRotation()) !== undefined) {
+      bearMonster.moveByRotation();
+    } else {
+      bearMonster.stopMove();
+    }
+    if ((p2Monster.monster.moveRotation  = p2KeyRotation.getKeyRotation()) !== undefined) {
+      p2Monster.moveByRotation();
+    } else {
+      p2Monster.stopMove();
+    }
+  });
+  
 })
 
 
@@ -217,6 +269,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <canvas id="shoot"></canvas>
+    <canvas id="autoShoot"></canvas>
   </div>
 </template>

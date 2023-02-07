@@ -11,7 +11,7 @@ import { getUrlPrefix } from '../../utils/image';
 
 onMounted(() => {
 
-  const canvas = document.querySelector('#shoot') as HTMLCanvasElement;
+  const canvas = document.querySelector('#autoShoot') as HTMLCanvasElement;
   resource.addResource([
     {
       name: 'imageName',
@@ -36,25 +36,14 @@ onMounted(() => {
       },
       preload: true,
     },
-    {
-      name: 'spriteName',
-      type: RESOURCE_TYPE.SPRITE,
-      src: {
-        image: {
-          type: 'png',
-          url: 'https://gw.alicdn.com/tfs/TB1ONLxOAL0gK0jSZFAXXcA9pXa-900-730.png'
-        },
-      },
-      preload: true
-    }
   ]);
 
   const game = new Game({
     systems: [
       new RendererSystem({
-        canvas: canvas,
+        canvas,
         width: 1000,
-        height: 1000,
+        height: 800,
         backgroundColor: 0x1099bb
       }),
       new ImgSystem(),
@@ -97,16 +86,10 @@ onMounted(() => {
 
   game.scene.addChild(image);
 
-  canvas.addEventListener('mousedown', (ev) => {
-    ev.stopPropagation()
-    console.log('mousedown', ev);
-    const { offsetX, offsetY } = ev;
-    // image.transform.rotation = 
-    shoot(rotateToPoint(offsetX, offsetY, image.transform.position.x, image.transform.position.y), image.transform.position);
-  });
-
   const bulletSpeed = 2;
   const bullets: GameObject[] = [];
+  const firingRate = 1000;
+  let lastShootTime = Date.now();
 
   function shoot(rotation, startPosition) {
     const bulletsGameObj = new GameObject('gameObject1', {
@@ -124,10 +107,14 @@ onMounted(() => {
     game.scene.addChild(bulletsGameObj);
   }
 
-
+  let mousePosition = {
+    offsetX: 0,
+    offsetY: 0,
+  };
   canvas.addEventListener('mousemove', (ev) => {
     ev.stopPropagation()
     const { offsetX, offsetY } = ev;
+    mousePosition = { offsetX, offsetY };
     image.transform.rotation = rotateToPoint(image.transform.position.x, image.transform.position.y, offsetX, offsetY);
   });
 
@@ -163,6 +150,11 @@ onMounted(() => {
           game.scene.removeGameObject(item);
         })
       }
+    }
+
+    if (Date.now() - lastShootTime > firingRate) {
+      shoot(rotateToPoint(mousePosition.offsetX, mousePosition.offsetY, image.transform.position.x, image.transform.position.y), image.transform.position);
+      lastShootTime = Date.now();
     }
     // console.log(bullets)
   });
@@ -217,6 +209,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <canvas id="shoot"></canvas>
+    <canvas id="autoShoot"></canvas>
   </div>
 </template>
