@@ -1,46 +1,36 @@
-
-import { IVector } from '../../libs/@yubi/game/hook/useVector';
-export type TBulletType = 'direct' | 'range';
-export type TDemageType = 'ad' | 'ap';
+import { Game, GameObject } from "@eva/eva.js";
 
 // 基础伤害
-export interface IBullet {
-  // 子弹名称
-  name: String;
-  // 伤害值
-  value: number;
-  bulletType: TBulletType
-  // 伤害类型 
-  demageType: TDemageType;
-  // 发射的时间戳
-  startTime: number;
-  // 子弹贴图
-  img: any;
-  // 子弹向量
-  vector: IVector;
+export interface IBullets {
+  list: GameObject[]; // 一类型的子弹统一维护
+  bulletSpeed: number;
+  lastMoveTime: number;
+  damage: number;
+  // moveRotation?: number;
 }
 
-export interface IDirectBullet extends IBullet {
-  // 延迟伤害
-  delay: number;
-}
+export const useBullets = (game: Game, options = {}) => {
+  const bullets = {
+    list: [],
+    bulletSpeed: 5,
+    lastMoveTime: Date.now(),
+    damage: 5,
+    ...options,
+  };
 
+  const destory = (i) => {
+    const [destoryBullet] = bullets.list.splice(i, 1);
+    game.scene.removeGameObject(destoryBullet);
+    destoryBullet.destroy()
+  }
 
-// 范围伤害
-export interface IRangeBullet extends IBullet{
-  // 攻击次数 即可穿透
-  attackTime: number;
-  // 射程
-  field: number;
-  width: number;
-  height: number;
-  // 实际体积，先搁置 多边形的各个点的位置与基点的偏移量
-  nodeList?: Array<{
-    offsetX: number;
-    offsetY: number;
-  }>;
-}
+  const addBullet = (bullet: GameObject) => {
+    bullets.list.push(bullet);
+  }
 
-export const useBullet = () => {
-
+  return {
+    bullets,
+    addBullet,
+    destory,
+  }
 }

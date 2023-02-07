@@ -91,7 +91,7 @@ onMounted(() => {
 
   const bulletSpeed = 2;
   const bullets: GameObject[] = [];
-  const firingRate = 50;
+  const firingRate = 1;
   let lastShootTime = Date.now();
 
   function shoot(rotation, startPosition) {
@@ -132,11 +132,13 @@ onMounted(() => {
         const gameObj = bullets.splice(b, 1);
         gameObj.forEach(item => {
           game.scene.removeGameObject(item);
+          item.destroy();
         })
       } else if (position.y > 1100 || position.y < -100) {
         const gameObj = bullets.splice(b, 1);
         gameObj.forEach(item => {
           game.scene.removeGameObject(item);
+          item.destroy();
         })
       }
     }
@@ -230,6 +232,7 @@ onMounted(() => {
         fontSize: 16,
         fontStyle: 'italic',
         fontWeight: 'bold',
+        padding: 5,
       }
     })
   );
