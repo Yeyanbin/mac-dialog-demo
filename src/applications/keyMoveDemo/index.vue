@@ -7,6 +7,7 @@ import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
 import { getDistance, rotateToPoint } from '../utils/base';
 import useMonster from '../hooks/useMonster';
+import useKeyRotation from '../hooks/useKeyRotation';
 
 onMounted(() => {
   const canvas = document.querySelector('#move') as HTMLCanvasElement;
@@ -61,15 +62,18 @@ onMounted(() => {
 
   game.scene.addChild(bear);
 
-  const bearMonster = useMonster(bear, game);
+  // const bearMonster = useMonster(bear, game);
+  
+  const bearKeyRotation = useKeyRotation();
 
-  canvas.addEventListener('click', (ev) => {
-    ev.stopPropagation()
-  });
-  canvas.addEventListener('mousedown', (ev) => {
-    bearMonster.moveToPosition(ev.offsetX, ev.offsetY);
-    ev.stopPropagation()
-  });
+
+  // canvas.addEventListener('click', (ev) => {
+  //   ev.stopPropagation()
+  // });
+  // canvas.addEventListener('mousedown', (ev) => {
+  //   // bearMonster.moveToPosition(ev.offsetX, ev.offsetY);
+  //   ev.stopPropagation()
+  // });
 })
 
 </script>

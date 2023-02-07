@@ -2,7 +2,7 @@
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { getDistance, rotateToPoint } from '../utils/base';
 
-interface IMonster {
+export interface IMonster {
     obj: GameObject;
     resource: string;
     positions: {
@@ -33,13 +33,22 @@ const useMonster = (gameObj: GameObject, game: Game, monsterOptions = {}) => {
         ...monsterOptions,
     };
 
-    const move = (x, y) => {
+    const moveToPosition = (x, y) => {
         monster.isMove = true;
         monster.lastMoveTime = Date.now();
         monster.positions = {x,y};
         monster.obj.transform.rotation = 
             rotateToPoint(x, y, monster.obj.transform.position.x, monster.obj.transform.position.y);
     };
+
+    const moveByRotation = (rotate: number) => {
+        monster.isMove = true;
+        monster.obj.transform.rotation = rotate;
+    }
+
+    const stopMove = () => {
+        monster.isMove = false;
+    }
 
     game.ticker.add((e: UpdateParams)=>{
         if (monster.isMove) {
@@ -60,7 +69,9 @@ const useMonster = (gameObj: GameObject, game: Game, monsterOptions = {}) => {
 
     return {
         monster,
-        move,
+        stopMove,
+        moveToPosition,
+        moveByRotation,
     };
 };
 

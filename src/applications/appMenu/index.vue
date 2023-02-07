@@ -5,6 +5,7 @@ import bulletTestVue from '../bulletTest/index.vue';
 import shootDemoVue from '../shootDemo/index.vue';
 import autoShootDemoVue from '../autoShootDemo/index.vue';
 import moveDemoVue from '../moveDemo/index.vue';
+import keyMoveDemo from '../keyMoveDemo/index.vue';
 
 import { CashOutline as CashIcon } from '@vicons/ionicons5'
 
@@ -36,6 +37,10 @@ const appMap = {
   moveDemoVue: {
     component: markRaw(moveDemoVue),
     title: '点击移动demo，请点击任意位置，小熊会往该处移动'
+  },
+  keyMoveDemo: {
+    component: markRaw(keyMoveDemo),
+    title: '通过键盘的上下左右方向键来控制小熊的移动'
   },
 }
 
@@ -97,6 +102,18 @@ const addApplication = (applicationName) => {
         点击移动Demo
       </div>
     </div>
+
+    <div class="icon-wrap">
+      <n-button color="#8a2be2" circle @click="addApplication('keyMoveDemo')">
+        <template #icon>
+          <n-icon><cash-icon /></n-icon>
+        </template>
+      </n-button>
+      <div>
+        键盘移动demo
+      </div>
+    </div>
+
   </div>  
 </template>
 
