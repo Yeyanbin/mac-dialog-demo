@@ -29,3 +29,18 @@ export const getShootStartPosition = ({ x, y }, rotation: number, dis: number) =
         y: Math.sin(rotation) * dis + y
     }
 }
+
+/**
+ * 矩形重叠检测，即碰撞检测
+ */
+interface IRect {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+export const isRectangleOverlap = (rec1: IRect, rec2: IRect) => {
+    const x_overlap = !(rec1.x + rec1.width <= rec2.x || rec2.x + rec2.width <= rec1.x);
+    const y_overlap = !(rec1.height + rec1.y <= rec2.y || rec2.y + rec2.height <= rec1.y);
+    return x_overlap && y_overlap;
+}
