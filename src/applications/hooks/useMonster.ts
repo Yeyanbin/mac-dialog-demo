@@ -9,9 +9,11 @@ export interface IMonster {
         x: number;
         y: number;
     },
+    width: number;
+    height: number;
     isMove: boolean;
-    moveSpeed: number,
-    HP: number,
+    moveSpeed: number;
+    HP: number;
     lastMoveTime: number;
     moveRotation?: number;
     skills: any[]
@@ -29,6 +31,8 @@ const useMonster = (gameObj: GameObject, game: Game, monsterOptions = {}) => {
             x: 0,
             y: 0
         },
+        width: 10,
+        height: 10,
         moveRotation: 0,
         resource: '',
         lastMoveTime: Date.now(),
