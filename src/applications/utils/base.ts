@@ -1,3 +1,4 @@
+import { Game, GameObject } from "@eva/eva.js";
 
 /**
  * abs(x1 - x2) ^ 2 +  
@@ -43,4 +44,12 @@ export const isRectangleOverlap = (rec1: IRect, rec2: IRect) => {
     const x_overlap = !(rec1.x + rec1.width <= rec2.x || rec2.x + rec2.width <= rec1.x);
     const y_overlap = !(rec1.height + rec1.y <= rec2.y || rec2.y + rec2.height <= rec1.y);
     return x_overlap && y_overlap;
+}
+
+
+export const destory = (game: Game, gameObjList: GameObject[]) => {
+    game.destroy();
+    gameObjList.forEach((gameObj) => {
+        gameObj.destroy();
+    })
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
@@ -8,12 +8,36 @@ import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { Sprite, SpriteSystem } from '@eva/plugin-renderer-sprite';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
 import { getUrlPrefix } from '../../utils/image';
-import { getRandomRotate, getShootStartPosition } from '../utils/base';
+import { destory, getRandomRotate, getShootStartPosition } from '../utils/base';
 import useKeyRotation from '../hooks/useKeyRotation';
 import useMonster from '../hooks/useMonster';
 
-onMounted(() => {
+import { appMap } from '../config';
 
+onMounted(() => {
+  onUnmounted(() => {
+    console.log('销毁')
+
+    resource.destroy('bearImg');
+    resource.destroy('bullet').then(() => {
+      console.log('resource', resource)
+      game.destroy();
+      game.destroySystems();
+    })
+  })
+
+  document.querySelector('#dialogContent').addEventListener('message', (event) => {
+      console.log('dialogContent addEventListener message', event);
+      const data: any = event.detail;
+      // Do something with the data
+      if (data.name === appMap.randomShootVue.name) {
+        if (data.type === 'closeDialog') {
+          // destory(game, [bear])
+          console.log('关闭')
+        }
+      }
+  });
+  console.log('onMounted')
   const canvas = document.querySelector('#autoShoot') as HTMLCanvasElement;
   resource.addResource([
   {
@@ -109,17 +133,6 @@ onMounted(() => {
     bullets.push(bulletsGameObj);
     game.scene.addChild(bulletsGameObj);
   }
-
-  canvas.addEventListener('mousemove', (ev) => {
-    ev.stopPropagation()
-    // const { offsetX, offsetY } = ev;
-  });
-
-
-  canvas.addEventListener('click', (ev) => {
-    ev.stopPropagation()
-  });
-
 
   game.ticker.add((e: UpdateParams) => {
     (text.components[1] as any).text = `当前子弹数量为：${bullets.length}`

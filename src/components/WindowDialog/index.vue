@@ -18,7 +18,7 @@
           <slot name="title">{{props.title}}</slot>
         </span>
       </div>
-      <div style="height: calc(100% - 36px)">
+      <div style="height: calc(100% - 36px)" id="dialogContent">
         <slot :dialogProp="dialogProp" :context="getContext()">
           content
         </slot>      
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRefs, watch } from 'vue';
+import { onMounted, ref, watch, nextTick } from 'vue';
 import { updateZIndex } from './domains/ZIndexHandler';
 
 import { addMouseUpEventLister, addMoveEventListener, MOUSE_MOVE_STATE_MAP, removeMoveEventListener } from './domains/moveEventHandler';
@@ -66,7 +66,11 @@ const getContext = (): IContext  => {
 const { updateDialogState, dialogStateStyle } = useDialogState();
 
 const closeDialog = (e: MouseEvent) => {
-  emit('closeDialog', e, getContext());
+  const context = getContext()
+  send('closeDialog', e, context);
+  nextTick(() => {
+    emit('closeDialog', e, context);
+  });
 };
 
 const minimize = (e) => {
@@ -143,7 +147,6 @@ const dialogProp = ref({
 
 const windowBorder = ref(updateWindowBorder(dialogProp, ZIndex))
 
-
 const isMoving = ref(false);
 
 watch(dialogProp.value, (...args) => {
@@ -159,6 +162,17 @@ watch(dialogProp.value, (...args) => {
     });
   }
 });
+
+const send = (funType, event, context) => {
+  document.querySelector('#dialogContent').dispatchEvent(new CustomEvent('message', {
+    detail: {
+      name: props.name,
+      type: funType,
+      event,
+      context,
+    }
+  }));
+}
 
 // 这里需要改成全局监听
 onMounted(() => {
