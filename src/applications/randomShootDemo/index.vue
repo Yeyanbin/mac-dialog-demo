@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
+import { Game, GameObject, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
 import { StatsSystem } from '@eva/plugin-stats';
-import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
-import { Sprite, SpriteSystem } from '@eva/plugin-renderer-sprite';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
 import { getUrlPrefix } from '../../utils/image';
 import { destory, getRandomRotate, getShootStartPosition } from '../utils/base';
@@ -17,13 +15,7 @@ import { appMap } from '../config';
 onMounted(() => {
   onUnmounted(() => {
     console.log('销毁')
-
-    resource.destroy('bearImg');
-    resource.destroy('bullet').then(() => {
-      console.log('resource', resource)
-      game.destroy();
-      game.destroySystems();
-    })
+    game.destroy();
   })
 
   document.querySelector('#dialogContent').addEventListener('message', (event) => {
@@ -39,44 +31,17 @@ onMounted(() => {
   });
   console.log('onMounted')
   const canvas = document.querySelector('#autoShoot') as HTMLCanvasElement;
-  resource.addResource([
-  {
-      name: 'bearImg',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/bunny.png'
-        },
-      },
-      preload: true,
-    },
-    {
-      name: 'bullet',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/carrot.png'
-        },
-      },
-      preload: true,
-    },
-  ]);
-
+  // canvas.willReadFrequently = true;
   const game = new Game({
     systems: [
       new RendererSystem({
         canvas,
         width: 1000,
         height: 800,
-        backgroundColor: 0x1099bb
+        backgroundColor: 0x1099bb,
       }),
+      // new Event
       new ImgSystem(),
-      new EventSystem({
-        // moveWhenInside: true // 代表只有在元素内部才会执行move事件，默认为false
-      }),
-      new SpriteSystem(),
       new TextSystem()
     ],
   });
@@ -115,7 +80,7 @@ onMounted(() => {
 
   const bulletSpeed = 2;
   const bullets: GameObject[] = [];
-  const firingRate = 1;
+  const firingRate = 50;
   let lastShootTime = Date.now();
 
   function shoot(rotation, startPosition) {
@@ -285,6 +250,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <canvas id="autoShoot"></canvas>
+    <canvas id="autoShoot" willReadFrequently="true"></canvas>
   </div>
 </template>

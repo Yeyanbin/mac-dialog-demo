@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
@@ -9,21 +9,11 @@ import useKeyRotation from '../hooks/useKeyRotation';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
 
 onMounted(() => {
+  onUnmounted(() => {
+    console.log('销毁')
+    game.destroy();
+  })
   const canvas = document.querySelector('#move') as HTMLCanvasElement;
-
-  resource.addResource([
-    {
-      name: 'bearImg',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/bunny.png'
-        },
-      },
-      preload: true,
-    },
-  ]);
 
   const game = new Game({
     systems: [

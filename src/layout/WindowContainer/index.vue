@@ -87,9 +87,9 @@ const props = defineProps({
 const windowDialogContainerRef = ref<HTMLDivElement>();
 
 onMounted(() => {
-  const { watch } = useDomObserver();
+  // const { watch } = useDomObserver();
   console.log('windowDialogContainerRef', windowDialogContainerRef)
-  watch(windowDialogContainerRef.value);
+  // watch(windowDialogContainerRef.value);
 });
 
 

@@ -7,8 +7,34 @@ import { CashOutline as CashIcon } from '@vicons/ionicons5'
 
 import { defineEmits, markRaw } from 'vue';
 import { DIALOG_STATE } from '../../components/WindowDialog/domains/useDialogState';
+import { resource, RESOURCE_TYPE } from '@eva/eva.js';
 
 import { appMap } from '../config';
+import { getUrlPrefix } from '../../utils/image';
+
+resource.addResource([
+  {
+    name: 'bearImg',
+    type: RESOURCE_TYPE.IMAGE,
+    src: {
+      image: {
+        type: 'png',
+        url: getUrlPrefix() + '/bunny.png'
+      },
+    },
+  },
+  {
+    name: 'bullet',
+    type: RESOURCE_TYPE.IMAGE,
+    src: {
+      image: {
+        type: 'png',
+        url: getUrlPrefix() + '/carrot.png'
+      },
+    },
+  },
+]);
+
 
 const props = defineProps({
   containerProp: {

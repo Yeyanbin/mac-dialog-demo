@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
@@ -7,20 +7,10 @@ import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
 
 onMounted(() => {
-  resource.addResource([
-    {
-      name: 'imageName',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/bunny.png'
-        },
-      },
-      preload: true,
-    },
-  ]);
-
+  onUnmounted(() => {
+    console.log('销毁')
+    game.destroy();
+  })
   const game = new Game({
     systems: [
       new RendererSystem({
@@ -51,7 +41,7 @@ onMounted(() => {
 
   image.addComponent(
     new Img({
-      resource: 'imageName',
+      resource: 'bearImg',
     })
   );
 

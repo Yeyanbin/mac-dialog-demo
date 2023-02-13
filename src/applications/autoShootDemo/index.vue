@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
 import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
@@ -7,36 +7,13 @@ import { StatsSystem } from '@eva/plugin-stats';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { Sprite, SpriteSystem } from '@eva/plugin-renderer-sprite';
 import { Text, TextSystem } from '@eva/plugin-renderer-text';
-import { getUrlPrefix } from '../../utils/image';
 
 onMounted(() => {
-
+  onUnmounted(() => {
+    console.log('销毁')
+    game.destroy();
+  })
   const canvas = document.querySelector('#autoShoot') as HTMLCanvasElement;
-  resource.addResource([
-    {
-      name: 'imageName',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/bunny.png',
-          // 'https://gw.alicdn.com/tfs/TB1DNzoOvb2gK0jSZK9XXaEgFXa-658-1152.webp',
-        },
-      },
-      preload: true,
-    },
-    {
-      name: 'bullet',
-      type: RESOURCE_TYPE.IMAGE,
-      src: {
-        image: {
-          type: 'png',
-          url: getUrlPrefix() + '/carrot.png'
-        },
-      },
-      preload: true,
-    },
-  ]);
 
   const game = new Game({
     systems: [
@@ -77,10 +54,9 @@ onMounted(() => {
       y: 0,
     },
   });
-
   image.addComponent(
     new Img({
-      resource: 'imageName',
+      resource: 'bearImg',
     })
   );
 

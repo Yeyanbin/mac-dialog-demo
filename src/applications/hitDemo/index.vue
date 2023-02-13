@@ -15,8 +15,6 @@ onMounted(() => {
   onUnmounted(() => {
     console.log('销毁')
     game.destroy();
-    game.destroySystems();
-    console.log('resource', resource)
     // resource.destroy('bearImg');
     // resource.destroy('bullet').then(() => {
     //   console.log('resource', resource)
