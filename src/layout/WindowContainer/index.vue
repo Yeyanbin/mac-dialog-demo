@@ -47,6 +47,9 @@
     </div>
     <div class="window-dialog-menu">
       <AppMenu :containerProp="containerProp" @addApplication="addWindowDialog"></AppMenu>
+      <div>
+        <GameMenu :containerProp="containerProp" @addApplication="addWindowDialog"></GameMenu>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +65,8 @@ import { AddCircleOutline } from '@vicons/ionicons5';
 import { IDialogProp, IWindowDialog } from '../../interface/windowDialog';
 
 import AppMenu from '../../applications/appMenu/index.vue';
+import GameMenu from '../../games/appMenu/index.vue';
+
 // 这里用markRaw估计是在setup里才需要的
 // console.log('login ', markRaw(login));
 
@@ -144,5 +149,9 @@ const {
 
 .operator-button-group {
   padding: 5px 20px;
+}
+
+.window-dialog-menu {
+  display: flex;
 }
 </style>
