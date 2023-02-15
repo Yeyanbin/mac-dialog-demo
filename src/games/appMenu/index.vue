@@ -11,6 +11,7 @@ import { resource, RESOURCE_TYPE } from '@eva/eva.js';
 
 import { appMap } from '../config';
 import { getUrlPrefix } from '../../utils/image';
+import { flowerBulletEmojiNameList, monsterEmojiNameList } from '../emoji.config';
 
 
 const addEmoji = (emojiList: string[]) => {
@@ -26,7 +27,12 @@ const addEmoji = (emojiList: string[]) => {
   })));
 }
 
-addEmoji(['cat', 'flower1', 'flower2', 'flower3', 'flower4', 'flower5', 'flower6'])
+// 猫咪和他的子弹
+addEmoji(['cat', ...flowerBulletEmojiNameList])
+
+// 怪物
+addEmoji(monsterEmojiNameList);
+
 
 const props = defineProps({
   containerProp: {
@@ -53,10 +59,11 @@ const addApplication = (app) => {
 <template>
   <div>
     <div class="icon-wrap" v-for="item of appMap">
-      <n-button color="#8a2be2" circle @click="addApplication(item)">
+      <n-button circle @click="addApplication(item)">
         <template #icon>
-          <n-image
-            width="100"
+          <img
+            width="20"
+            height="20"
             :src="item.imageSrc"
           />        
         </template>

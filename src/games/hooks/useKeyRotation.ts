@@ -68,8 +68,13 @@ const useKeyRotation = ({ up, down, left, right }: {
         document.removeEventListener('keyup', keyupListener);
     }
 
+    const isRight = () => {
+        return !keyMaps[left];
+    }
+
     return {
         getKeyRotation,
+        isRight,
         destory,
     };
 }
