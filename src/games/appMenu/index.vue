@@ -13,6 +13,7 @@ import { appMap } from '../config';
 import { getUrlPrefix } from '../../utils/image';
 import { flowerBulletEmojiNameList, monsterEmojiNameList } from '../emoji.config';
 
+import { gameConfig } from '../config';
 
 const addEmoji = (emojiList: string[]) => {
   resource.addResource(emojiList.map((name) => ({
@@ -48,8 +49,8 @@ const addApplication = (app) => {
     isEasy: true,
     state: DIALOG_STATE.NORMAL,
     defaultDialogProp: {
-      height: '800px',
-      width: '1000px',
+      height: `${gameConfig.height}px`,
+      width: `${gameConfig.width}px`,
     },
     ...app,
   });

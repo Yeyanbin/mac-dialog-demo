@@ -1,6 +1,11 @@
 import { Game, GameObject } from "@eva/eva.js";
 import { Img } from '@eva/plugin-renderer-img';
 
+export const takeDamage = (monster, damage) => {
+  monster.HP -= damage;
+  return monster.HP > 0;
+}
+
 const useMonster = (game: Game, name: string, options = {}) => {
 
   const defaultOptions = {
@@ -17,7 +22,7 @@ const useMonster = (game: Game, name: string, options = {}) => {
     monsterList.push({
       obj: gameObj,
       ...defaultOptions,
-    })
+    });
   }
 
   const create = (position) => {
@@ -37,9 +42,16 @@ const useMonster = (game: Game, name: string, options = {}) => {
     game.scene.addChild(gameObj);
   }
 
+  const destory = (i) => {
+    const [monster] = monsterList.splice(i, 1);
+    game.scene.removeGameObject(monster.obj);
+    monster.obj.destroy();
+  }
+
   return {
     monsterList,
     create,
+    destory,
   };
 };
 

@@ -18,8 +18,8 @@ export interface IBullets {
 export const useBullets = (game: Game, bulletName: string, options = {}) => {
   const bullets: IBullets = {
     list: [],
-    bulletSpeed: 200,
-    damage: 5,
+    bulletSpeed: 40,
+    damage: 30,
     bulletWidth: 10,
     bulletHeight: 10,
     ...options,

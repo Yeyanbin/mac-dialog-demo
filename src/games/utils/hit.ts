@@ -4,8 +4,7 @@ export interface IHitObj {
   y_1: number;
   x_2: number;
   y_2: number;
-  name?: number;
-  index: number;
+  data: any;
   isDestory?: boolean;
 }
 

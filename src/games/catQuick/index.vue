@@ -12,6 +12,7 @@ import { StatsSystem } from '@eva/plugin-stats';
 import { flowerBulletEmojiNameList, monsterEmojiNameList } from '../emoji.config';
 import useMonster, { takeDamage } from '../hooks/useMonster';
 import { gameConfig } from '../config';
+import { computeHit } from '../utils/hit';
 
 
 onMounted(() => {
@@ -166,7 +167,7 @@ onMounted(() => {
   // 处理子弹发射
   const flowerBullets = flowerBulletEmojiNameList.map((name) => useBullets(game, name, {}))
 
-  const firingRate = 30;
+  const firingRate = 8;
   let lastShootTime = Date.now();
   const hitObject = [];
   let hitTime = 0;
@@ -189,7 +190,7 @@ onMounted(() => {
     }
 
     // 简单碰撞检测
-    const bullets = [];
+    const bullets: any[] = [];
 
     flowerBullets.forEach((flowerBullet) => {
       flowerBullet.bullets.list.forEach(({content, move}) => {
@@ -211,56 +212,63 @@ onMounted(() => {
     }，怪物数量：${monsters.map(({ monsterList }) => monsterList.length).reduce((a, b) => a+b)
     }，消灭怪物数量：${destoryTime}，`;
 
-    for (let b = bullets.length - 1; b >= 0; b--) {
-      if (!bullets[b].content || !bullets[b].content.transform) {
-        console.log(bullets[b], b, '被销毁了')
-        break;
-      }
-      // console.log(bullets[b], b)
-      const { bulletWidth, bulletHeight } = bullets[b];
-      const position = (bullets[b].content as GameObject).transform.position;
-      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
-        if (!monster.obj.destroyed && isRectangleOverlap({
-          x: position.x - bulletWidth * 0.5,
-          y: position.y - bulletHeight * 0.5,
-          width: bulletWidth,
-          height: bulletHeight
-        }, {
-          x: monster.obj.transform.position.x - monster.width * 0.5,
-          y: monster.obj.transform.position.y - monster.height * 0.5,
-          width: monster.width,
-          height: monster.height,
-        })) {
-          // console.log('被击中了喔');
-          // 计算伤害
-          if (!takeDamage(monster, bullets[b].damage)) {
-            monsterData.destory(monsterIndex);
-            ++destoryTime;
-          }
-          ++hitTime;
-          const gameObj = bullets.splice(b, 1);
-          gameObj.forEach(({content, destory}) => {
-            // game.scene.removeGameObject(content);
-            // content.destroy();
-            destory();
-          });
-        }
-      }));
-    }
+
+    // computeHit(
+    //   bullets.map((bullet) => ({
+    //     x_1: bullet.content.
+    //   })),
+    //   monsters.map(() => ({
+
+    //   })),
+    //   (bullet, monster) => {
+
+    //   }
+    // )
+
+    // for (let b = bullets.length - 1; b >= 0; b--) {
+    //   if (!bullets[b].content || !bullets[b].content.transform) {
+    //     console.log(bullets[b], b, '被销毁了')
+    //     break;
+    //   }
+    //   // console.log(bullets[b], b)
+    //   const { bulletWidth, bulletHeight } = bullets[b];
+    //   const position = (bullets[b].content as GameObject).transform.position;
+    //   monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
+    //     if (!monster.obj.destroyed && isRectangleOverlap({
+    //       x: position.x - bulletWidth * 0.5,
+    //       y: position.y - bulletHeight * 0.5,
+    //       width: bulletWidth,
+    //       height: bulletHeight
+    //     }, {
+    //       x: monster.obj.transform.position.x - monster.width * 0.5,
+    //       y: monster.obj.transform.position.y - monster.height * 0.5,
+    //       width: monster.width,
+    //       height: monster.height,
+    //     })) {
+    //       // console.log('被击中了喔');
+    //       // 计算伤害
+    //       if (!takeDamage(monster, bullets[b].damage)) {
+    //         monsterData.destory(monsterIndex);
+    //         ++destoryTime;
+    //       }
+    //       ++hitTime;
+    //       const gameObj = bullets.splice(b, 1);
+    //       gameObj.forEach(({content, destory}) => {
+    //         // game.scene.removeGameObject(content);
+    //         // content.destroy();
+    //         destory();
+    //       });
+    //     }
+    //   }));
+    // }
   });
 
   // 生成怪物
   const monsters = monsterEmojiNameList.map((name) => useMonster(game, name, {}))
 
-  const monsterCreateRate = 50;
+  const monsterCreateRate = 30;
   let lastCreateTime = Date.now();
 
-  // monsters.forEach((monster) => {
-  //   monster.create({
-  //     x: Math.random() * 1000,
-  //     y: Math.random() * 800,
-  //   });
-  // })
 
   // // 随机生成怪物
   game.ticker.add((e: UpdateParams) => {
