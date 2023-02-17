@@ -10,3 +10,9 @@ export const appMap = {
     imageSrc: `${getUrlPrefix()}/emoji/cat.png`
   },
 }
+
+export const gameConfig = {
+  width: 1400,
+  height: 1200,
+  topPadding: 100,
+};

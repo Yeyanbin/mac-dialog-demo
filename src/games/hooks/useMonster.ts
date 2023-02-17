@@ -1,84 +1,58 @@
+import { Game, GameObject } from "@eva/eva.js";
+import { Img } from '@eva/plugin-renderer-img';
 
-import { Game, GameObject, resource, RESOURCE_TYPE, UpdateParams } from '@eva/eva.js';
-import { getDistance, rotateToPoint } from '../utils/base';
-
-export interface IMonster {
-    obj: GameObject;
-    resource: string;
-    positions: {
-        x: number;
-        y: number;
-    },
-    width: number;
-    height: number;
-    isMove: boolean;
-    moveSpeed: number;
-    HP: number;
-    lastMoveTime: number;
-    moveRotation?: number;
-    skills: any[]
+export const takeDamage = (monster, damage) => {
+  monster.HP -= damage;
+  return monster.HP > 0;
 }
 
-const useMonster = (gameObj: GameObject, game: Game, monsterOptions = {}) => {
-    
-    const monster: IMonster = {
-        obj: gameObj,
-        isMove: false,
-        moveSpeed: 200, // 200pix/s
-        HP: 100,
-        skills: [],
-        positions: {
-            x: 0,
-            y: 0
-        },
-        width: 10,
-        height: 10,
-        moveRotation: 0,
-        resource: '',
-        lastMoveTime: Date.now(),
-        ...monsterOptions,
-    };
+const useMonster = (game: Game, name: string, options = {}) => {
 
+  const defaultOptions = {
+    HP: 100,
+    width: 40,
+    height: 40,
+    ...options
+  };
 
-    const moveToPosition = (x, y) => {
-        monster.isMove = true;
-        monster.lastMoveTime = Date.now();
-        monster.positions = {x,y};
-        monster.moveRotation = rotateToPoint(x, y, monster.obj.transform.position.x, monster.obj.transform.position.y);
-    };
-
-    const moveByRotation = () => {
-        monster.lastMoveTime = Date.now();
-        monster.isMove = true;
-    }
-
-    const stopMove = () => {
-        monster.isMove = false;
-    }
-
-    game.ticker.add((e: UpdateParams)=>{
-        if (monster.isMove) {
-            const moveDis = monster.moveSpeed * (Date.now() - monster.lastMoveTime)/1000;
-            const position = monster.obj.transform.position;
-            position.x += Math.cos(monster.moveRotation) * moveDis;
-            position.y += Math.sin(monster.moveRotation) * moveDis;
-            monster.lastMoveTime = Date.now();
-
-            if (
-              getDistance(position.x + Math.cos(monster.moveRotation) * moveDis, position.y 
-                + Math.sin(monster.moveRotation) * moveDis, monster.positions.x, monster.positions.y)
-            > getDistance(position.x, position.y, monster.positions.x, monster.positions.y)) {
-                monster.isMove = false;
-            }
-        }
+  const monsterList = [];
+  let size = 0;
+  
+  const addMonster = (gameObj: GameObject) => {
+    monsterList.push({
+      obj: gameObj,
+      ...defaultOptions,
     });
+  }
 
-    return {
-        monster,
-        stopMove,
-        moveToPosition,
-        moveByRotation,
-    };
+  const create = (position) => {
+    const gameObj = new GameObject(`${name}-${size}`, {
+      size: { width: 40, height: 40 },
+      origin: { x: 0.5, y: 0.5 },
+      position,
+    });
+    ++size;
+
+    gameObj.addComponent(
+      new Img({
+        resource: name,
+      })
+    );
+    addMonster(gameObj);
+    game.scene.addChild(gameObj);
+  }
+
+  const destory = (i) => {
+    const [monster] = monsterList.splice(i, 1);
+    game.scene.removeGameObject(monster.obj);
+    monster.obj.destroy();
+  }
+
+  return {
+    monsterList,
+    create,
+    destory,
+  };
 };
 
 export default useMonster;
