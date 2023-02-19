@@ -55,8 +55,8 @@ onMounted(() => {
     origin: { x: 0.5, y: 0.5 },
     scale: { x: -1, y: 1 },
     position: {
-      x: 500,
-      y: 400,
+      x: gameConfig.width / 2,
+      y: gameConfig.height / 2,
     },
     anchor: {
       x: 0,
