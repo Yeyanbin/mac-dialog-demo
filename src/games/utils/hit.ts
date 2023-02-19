@@ -87,6 +87,8 @@ export const computeHit = (bullets: IHitObj[], monsters: IHitObj[], hitCallback:
     }
     // 扫到子弹，且子弹是刚进入的
     if (item.type === TYPE_MAP.BULLET && item.y === item.item.y_1) {
+
+      // 区间看起来需要优化一下，提高性能
       // 判断碰撞 迭代一下怪物是否和新子弹重叠
       for (temp_index = monsterList.length-1; temp_index >= 0 ; temp_index--) {
         // 跳过被销毁的怪物
