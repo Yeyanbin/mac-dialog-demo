@@ -57,7 +57,7 @@ const useMove = (gameObj: GameObject, game: Game, moveOptions = {}, destoryCb = 
 
             if (position.x > gameConfig.width + BASE_DIS || position.x < - BASE_DIS) {
                 stopMove();
-            } else if (position.y > gameConfig.height + BASE_DIS || position.y < - BASE_DIS ) {
+            } else if (position.y > gameConfig.height + BASE_DIS || position.y < gameConfig.topPadding ) {
                 stopMove();
             }
 

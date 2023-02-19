@@ -10,8 +10,8 @@ const useMonster = (game: Game, name: string, options = {}) => {
 
   const defaultOptions = {
     HP: 100,
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
     ...options
   };
 
@@ -21,6 +21,13 @@ const useMonster = (game: Game, name: string, options = {}) => {
   const addMonster = (gameObj: GameObject) => {
     monsterList.push({
       obj: gameObj,
+      destory: () => {
+        if (gameObj.destroyed) {
+            return;
+        }
+        gameObj.destroy();
+        game.scene.removeGameObject(gameObj);
+      },
       ...defaultOptions,
     });
   }
@@ -44,6 +51,9 @@ const useMonster = (game: Game, name: string, options = {}) => {
 
   const destory = (i) => {
     const [monster] = monsterList.splice(i, 1);
+    if (monster && monster.destroyed) {
+        return;
+    }
     game.scene.removeGameObject(monster.obj);
     monster.obj.destroy();
   }

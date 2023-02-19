@@ -54,8 +54,8 @@ onMounted(() => {
     origin: { x: 0.5, y: 0.5 },
     scale: { x: -1, y: 1 },
     position: {
-      x: 500,
-      y: 400,
+      x: gameConfig.width / 2,
+      y: gameConfig.height / 2,
     },
     anchor: {
       x: 0,
@@ -211,6 +211,16 @@ onMounted(() => {
     }，怪物数量：${monsters.map(({ monsterList }) => monsterList.length).reduce((a, b) => a+b)
     }，消灭怪物数量：${destoryTime}，`;
 
+    const hitCallback = (bullet, monster) => {
+      if (!takeDamage(monster, bullet.damage)) {
+        monster.destory();
+        ++destoryTime;
+      }
+      ++hitTime;
+
+      bullet.destory();
+    }
+
     for (let b = bullets.length - 1; b >= 0; b--) {
       if (!bullets[b].content || !bullets[b].content.transform) {
         console.log(bullets[b], b, '被销毁了')
@@ -219,7 +229,7 @@ onMounted(() => {
       // console.log(bullets[b], b)
       const { bulletWidth, bulletHeight } = bullets[b];
       const position = (bullets[b].content as GameObject).transform.position;
-      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
+      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster) => {
         if (!monster.obj.destroyed && isRectangleOverlap({
           x: position.x - bulletWidth * 0.5,
           y: position.y - bulletHeight * 0.5,
@@ -231,19 +241,7 @@ onMounted(() => {
           width: monster.width,
           height: monster.height,
         })) {
-          // console.log('被击中了喔');
-          // 计算伤害
-          if (!takeDamage(monster, bullets[b].damage)) {
-            monsterData.destory(monsterIndex);
-            ++destoryTime;
-          }
-          ++hitTime;
-          const gameObj = bullets.splice(b, 1);
-          gameObj.forEach(({content, destory}) => {
-            // game.scene.removeGameObject(content);
-            // content.destroy();
-            destory();
-          });
+          hitCallback(bullets[b], monster);
         }
       }));
     }

@@ -20,8 +20,8 @@ export const useBullets = (game: Game, bulletName: string, options = {}) => {
     list: [],
     bulletSpeed: 40,
     damage: 30,
-    bulletWidth: 10,
-    bulletHeight: 10,
+    bulletWidth: 5,
+    bulletHeight: 5,
     ...options,
   };
   let size = 0;
@@ -55,7 +55,7 @@ export const useBullets = (game: Game, bulletName: string, options = {}) => {
   const shoot = (rotation, startPosition) => {
     // console.log('shoot', rotation, startPosition);
     const bulletsGameObj = new GameObject(`${bulletName}-${size}`, {
-      size: { width: 40, height: 40 },
+      size: { width: 30, height: 30 },
       origin: { x: 0.5, y: 0.5 },
       position: startPosition,
       rotation

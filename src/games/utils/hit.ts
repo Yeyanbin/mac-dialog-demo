@@ -126,7 +126,7 @@ export const computeHit = (bullets: IHitObj[], monsters: IHitObj[], hitCallback:
 
         // 判断是否重叠
         if (isRectangleOverlap(bullet.item, item.item)) {
-          hitCallback(item.item, bullet.item);
+          hitCallback(bullet.item, item.item);
         } else {
           bulletList.push(bullet);
         }

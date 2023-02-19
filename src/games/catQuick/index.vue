@@ -213,54 +213,55 @@ onMounted(() => {
     }，消灭怪物数量：${destoryTime}，`;
 
 
-    // computeHit(
-    //   bullets.map((bullet) => ({
-    //     x_1: bullet.content.
-    //   })),
-    //   monsters.map(() => ({
+    const hitMonsterList = [];
+      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
+        // x: monster.obj.transform.position.x - monster.width * 0.5,
+        // y: monster.obj.transform.position.y - monster.height * 0.5,
+        // width: monster.width,
+        // height: monster.height,
+        if (!monster.obj.destroyed) {
+          hitMonsterList.push({
+            x_1: monster.obj.transform.position.x - 0.5 * monster.width,
+            y_1: monster.obj.transform.position.y  - 0.5 * monster.height,
+            x_2: monster.obj.transform.position.x  + 0.5 * monster.width,
+            y_2: monster.obj.transform.position.y  + 0.5 * monster.height,
+            data: {
+              monster,
+            },
+          });
+        }
+      }));
 
-    //   })),
-    //   (bullet, monster) => {
+    computeHit(
+      bullets.map((bullet) => {
+        const {content, bulletHeight, bulletWidth} = bullet;
+        return {
+          x_1: content.transform.position.x - 0.5 * bulletWidth,
+          y_1: content.transform.position.y - 0.5 * bulletHeight,
+          x_2: content.transform.position.x + 0.5 * bulletWidth,
+          y_2: content.transform.position.y + 0.5 * bulletHeight,
+          data: {
+            bullet,
+          },
+        };
+      }),
+      hitMonsterList,
+      (hitBullet, hitMonster) => {
+        const { 
+          monster,
+        } = hitMonster.data;
+        const {
+          bullet,
+        } = hitBullet.data;
+        if (!takeDamage(monster, bullet.damage)) {
+          monster.destory();
+          ++destoryTime;
+        }
+        ++hitTime;
 
-    //   }
-    // )
-
-    // for (let b = bullets.length - 1; b >= 0; b--) {
-    //   if (!bullets[b].content || !bullets[b].content.transform) {
-    //     console.log(bullets[b], b, '被销毁了')
-    //     break;
-    //   }
-    //   // console.log(bullets[b], b)
-    //   const { bulletWidth, bulletHeight } = bullets[b];
-    //   const position = (bullets[b].content as GameObject).transform.position;
-    //   monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
-    //     if (!monster.obj.destroyed && isRectangleOverlap({
-    //       x: position.x - bulletWidth * 0.5,
-    //       y: position.y - bulletHeight * 0.5,
-    //       width: bulletWidth,
-    //       height: bulletHeight
-    //     }, {
-    //       x: monster.obj.transform.position.x - monster.width * 0.5,
-    //       y: monster.obj.transform.position.y - monster.height * 0.5,
-    //       width: monster.width,
-    //       height: monster.height,
-    //     })) {
-    //       // console.log('被击中了喔');
-    //       // 计算伤害
-    //       if (!takeDamage(monster, bullets[b].damage)) {
-    //         monsterData.destory(monsterIndex);
-    //         ++destoryTime;
-    //       }
-    //       ++hitTime;
-    //       const gameObj = bullets.splice(b, 1);
-    //       gameObj.forEach(({content, destory}) => {
-    //         // game.scene.removeGameObject(content);
-    //         // content.destroy();
-    //         destory();
-    //       });
-    //     }
-    //   }));
-    // }
+        bullet.destory();
+      }
+    )
   });
 
   // 生成怪物
@@ -283,7 +284,6 @@ onMounted(() => {
         } 
         createRandom = Math.floor(createRandom / 2);
       })
-
       lastCreateTime = Date.now();
     }
   })
