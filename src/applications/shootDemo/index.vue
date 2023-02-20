@@ -44,7 +44,7 @@ onMounted(() => {
     }
   }));
 
-  const image = new GameObject('image', {
+  const bear = new GameObject('bear', {
     size: { width: 30, height: 40 },
     origin: { x: 0.5, y: 0.5 },
     position: {
@@ -57,20 +57,20 @@ onMounted(() => {
     },
   });
 
-  image.addComponent(
+  bear.addComponent(
     new Img({
       resource: 'bearImg',
     })
   );
 
-  game.scene.addChild(image);
+  game.scene.addChild(bear);
 
   canvas.addEventListener('mousedown', (ev) => {
     ev.stopPropagation()
     console.log('mousedown', ev);
     const { offsetX, offsetY } = ev;
-    // image.transform.rotation = 
-    shoot(rotateToPoint(offsetX, offsetY, image.transform.position.x, image.transform.position.y), image.transform.position);
+    // bear.transform.rotation = 
+    shoot(rotateToPoint(offsetX, offsetY, bear.transform.position.x, bear.transform.position.y), bear.transform.position);
   });
 
   const bulletSpeed = 2;
@@ -96,7 +96,7 @@ onMounted(() => {
   canvas.addEventListener('mousemove', (ev) => {
     ev.stopPropagation()
     const { offsetX, offsetY } = ev;
-    image.transform.rotation = rotateToPoint(image.transform.position.x, image.transform.position.y, offsetX, offsetY);
+    bear.transform.rotation = rotateToPoint(bear.transform.position.x, bear.transform.position.y, offsetX, offsetY);
   });
 
 

@@ -9,11 +9,11 @@ export interface IHitObj {
 }
 
 const isRectangleOverlap = (rec1: IHitObj, rec2: IHitObj) => {
-  const x_overlap = !(rec1.x_2 <= rec2.x_1 || rec2.x_2 <= rec1.x_1);
-  const y_overlap = !(rec1.y_2 <= rec2.y_1 || rec2.y_2 <= rec1.y_1);
-  return x_overlap && y_overlap;
+  return !(rec1.x_2 <= rec2.x_1 || rec2.x_2 <= rec1.x_1);
 }
 
+const MAX = 20;
+const MIN = -10;
 
 const TYPE_MAP = {
   BULLET: 1,
@@ -74,8 +74,12 @@ export const computeHit = (bullets: IHitObj[], monsters: IHitObj[], hitCallback:
 
 
   // 判断碰撞的队列
-  let bulletList = [];
-  const monsterList = [];
+  let bulletList = {};
+  const monsterList = {};
+  for (let index = MIN; index <= MAX; index++) {
+    bulletList[index] = [];
+    monsterList[index] = [];
+  }
   let temp_index;
   // 开始扫描，分两种情况考虑
   list.forEach((item) => {    
@@ -88,26 +92,73 @@ export const computeHit = (bullets: IHitObj[], monsters: IHitObj[], hitCallback:
     // 扫到子弹，且子弹是刚进入的
     if (item.type === TYPE_MAP.BULLET && item.y === item.item.y_1) {
 
-      // 区间看起来需要优化一下，提高性能
-      // 判断碰撞 迭代一下怪物是否和新子弹重叠
-      for (temp_index = monsterList.length-1; temp_index >= 0 ; temp_index--) {
+      const { x_1, x_2 } = item.item;
+      const x_1_index = Math.floor(x_1/100);
+      const x_2_index = Math.floor(x_2/100);
+
+      for (temp_index = monsterList[x_1_index].length-1; temp_index >= 0 ; temp_index--) {
+
+        const monster = monsterList[x_1_index][temp_index].item;
         // 跳过被销毁的怪物
-        if (monsterList[temp_index].item.isDestory ) {
+        if (monster.isDestory ) {
           break;
         }
-        const monster = monsterList[temp_index];
-
         // 判断是否重叠
-        if (isRectangleOverlap(monster.item, item.item)) {
-          hitCallback(item.item, monster.item);
+        if (isRectangleOverlap(monster, item.item)) {
+          hitCallback(item.item, monster);
           break;
         }
       }
 
+      // 没有重叠，且跨越了两个区间
+      if (temp_index === -1 && x_1_index !== x_2_index) {
+        if (!monsterList[x_2_index]) {
+          console.log('test')
+        }
+        for (temp_index = monsterList[x_2_index].length-1; temp_index >= 0 ; temp_index--) {
+
+          const monster = monsterList[x_2_index][temp_index].item;
+          // 跳过被销毁的怪物
+          if (monster.isDestory ) {
+            break;
+          }
+          // 判断是否重叠
+          if (isRectangleOverlap(monster, item.item)) {
+            hitCallback(item.item, monster);
+            break;
+          }
+        }
+        // 没有重叠的，新子弹进去子弹队列
+        if (temp_index === -1) {
+          bulletList[x_2_index].push(item);
+        }
+      }
       // 没有重叠的，新子弹进去子弹队列
       if (temp_index === -1) {
-        bulletList.push(item);
+        bulletList[x_1_index].push(item);
       }
+
+
+      // // 区间看起来需要优化一下，提高性能
+      // // 判断碰撞 迭代一下怪物是否和新子弹重叠
+      // for (temp_index = monsterList.length-1; temp_index >= 0 ; temp_index--) {
+      //   // 跳过被销毁的怪物
+      //   if (monsterList[temp_index].item.isDestory ) {
+      //     break;
+      //   }
+      //   const monster = monsterList[temp_index];
+
+      //   // 判断是否重叠
+      //   if (isRectangleOverlap(monster.item, item.item)) {
+      //     hitCallback(item.item, monster.item);
+      //     break;
+      //   }
+      // }
+
+      // // 没有重叠的，新子弹进去子弹队列
+      // if (temp_index === -1) {
+      //   bulletList[Math.floor(23.442432/100)].push(item);
+      // }
     }
 
     // 扫到怪物 且怪物退出
@@ -115,25 +166,67 @@ export const computeHit = (bullets: IHitObj[], monsters: IHitObj[], hitCallback:
       item.item.isDestory = true;
     } 
     // 扫到怪物
-    else if (item.type === TYPE_MAP.MONSTER) {
-      const temp = bulletList;
-      bulletList = [];
-      // 迭代一下子弹队列，是否重叠
-      for (temp_index = temp.length-1; temp_index >= 0 ; temp_index--) {
-        // 判断一下子弹是否已销毁
-        if (temp[temp_index].item.isDestory ) {
+    if (item.type === TYPE_MAP.MONSTER && item.y === item.item.y_1) {
+      const { x_1, x_2 } = item.item;
+      const x_1_index = Math.floor(x_1/100);
+      const x_2_index = Math.floor(x_2/100);
+
+      for (temp_index = bulletList[x_1_index].length-1; temp_index >= 0 ; temp_index--) {
+
+        const bullet = bulletList[x_1_index][temp_index].item;
+        // 跳过被销毁的怪物
+        if (bullet.isDestory ) {
           break;
         }
-        const bullet = temp[temp_index];
-
         // 判断是否重叠
-        if (isRectangleOverlap(bullet.item, item.item)) {
-          hitCallback(bullet.item, item.item);
-        } else {
-          bulletList.push(bullet);
+        if (isRectangleOverlap(bullet, item.item)) {
+          hitCallback(bullet, item.item);
+          break;
         }
       }
-      monsterList.push(item);
+
+      // 没有重叠，且跨越了两个区间
+      if (temp_index === -1 && x_1_index !== x_2_index) {
+        for (temp_index = bulletList[x_2_index].length-1; temp_index >= 0 ; temp_index--) {
+
+          const bullet = bulletList[x_2_index][temp_index].item;
+          // 跳过被销毁的怪物
+          if (bullet.isDestory ) {
+            break;
+          }
+          // 判断是否重叠
+          if (isRectangleOverlap(bullet, item.item)) {
+            hitCallback(bullet, item.item);
+            break;
+          }
+        }
+        // 没有重叠的，新子弹进去子弹队列
+        if (temp_index === -1) {
+          monsterList[x_2_index].push(item);
+        }
+      }
+      // 没有重叠的，新子弹进去子弹队列
+      if (temp_index === -1) {
+        monsterList[x_1_index].push(item);
+      }
+      // const temp = bulletList;
+      // bulletList = [];
+      // // 迭代一下子弹队列，是否重叠
+      // for (temp_index = temp.length-1; temp_index >= 0 ; temp_index--) {
+      //   // 判断一下子弹是否已销毁
+      //   if (temp[temp_index].item.isDestory ) {
+      //     break;
+      //   }
+      //   const bullet = temp[temp_index];
+
+      //   // 判断是否重叠
+      //   if (isRectangleOverlap(bullet.item, item.item)) {
+      //     hitCallback(bullet.item, item.item);
+      //   } else {
+      //     bulletList.push(bullet);
+      //   }
+      // }
+      // monsterList.push(item);
     }
   })
 }

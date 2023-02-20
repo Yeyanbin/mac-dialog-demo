@@ -19,7 +19,7 @@ export const useBullets = (game: Game, bulletName: string, options = {}) => {
   const bullets: IBullets = {
     list: [],
     bulletSpeed: 40,
-    damage: 30,
+    damage: 40,
     bulletWidth: 5,
     bulletHeight: 5,
     ...options,

@@ -8,13 +8,13 @@ const defaultKey = {
 
 const rotatesMap = {
     "right": 0,
-    "up": -1.5707963267948966,
-    "left": 3.141592653589793,
-    "down": 1.5707963267948966,
-    "right+up": -0.7853981633974483,
-    "left+up": -2.356194490192345,
-    "right+down": 0.7853981633974483,
-    "left+down": 2.356194490192345
+    "up": -Math.PI/2,
+    "left": Math.PI,
+    "down": Math.PI/2,
+    "right+up": -Math.PI/4,
+    "left+up": -Math.PI*3/4,
+    "right+down": Math.PI/4,
+    "left+down": Math.PI*3/4
 }
 
 const useKeyRotation = ({ up, down, left, right }: {

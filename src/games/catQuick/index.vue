@@ -109,7 +109,7 @@ onMounted(() => {
 
   const catKeyRotation = useKeyRotation();
 
-  // 帧动画
+  // 帧事件
   game.ticker.add((e: UpdateParams)=>{
     // 获取现在按键移动的方位
     if ((catMove.move.moveRotation = catKeyRotation.getKeyRotation()) !== undefined) {
@@ -169,7 +169,6 @@ onMounted(() => {
 
   const firingRate = 8;
   let lastShootTime = Date.now();
-  const hitObject = [];
   let hitTime = 0;
   let destoryTime = 0;
 
@@ -204,6 +203,9 @@ onMounted(() => {
       })
     });
 
+    monsters.forEach((item) => {
+      item.monsterList = item.clearDestory();
+    });
     
     // 更新文本
     (text.components[1] as any).text = 
@@ -214,22 +216,16 @@ onMounted(() => {
 
 
     const hitMonsterList = [];
-      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster, monsterIndex) => {
-        // x: monster.obj.transform.position.x - monster.width * 0.5,
-        // y: monster.obj.transform.position.y - monster.height * 0.5,
-        // width: monster.width,
-        // height: monster.height,
-        if (!monster.obj.destroyed) {
-          hitMonsterList.push({
-            x_1: monster.obj.transform.position.x - 0.5 * monster.width,
-            y_1: monster.obj.transform.position.y  - 0.5 * monster.height,
-            x_2: monster.obj.transform.position.x  + 0.5 * monster.width,
-            y_2: monster.obj.transform.position.y  + 0.5 * monster.height,
-            data: {
-              monster,
-            },
-          });
-        }
+      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster) => {
+        hitMonsterList.push({
+          x_1: monster.obj.transform.position.x - 0.5 * monster.width,
+          y_1: monster.obj.transform.position.y  - 0.5 * monster.height,
+          x_2: monster.obj.transform.position.x  + 0.5 * monster.width,
+          y_2: monster.obj.transform.position.y  + 0.5 * monster.height,
+          data: {
+            monster,
+          },
+        });
       }));
 
     computeHit(

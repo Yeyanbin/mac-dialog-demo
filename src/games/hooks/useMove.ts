@@ -53,7 +53,7 @@ const useMove = (gameObj: GameObject, game: Game, moveOptions = {}, destoryCb = 
             position.x += Math.cos(move.moveRotation) * moveDis;
             position.y += Math.sin(move.moveRotation) * moveDis;
             move.lastMoveTime = Date.now();
-            // console.log('position', position);
+            // console.log('position', position);··
 
             if (position.x > gameConfig.width + BASE_DIS || position.x < - BASE_DIS) {
                 stopMove();

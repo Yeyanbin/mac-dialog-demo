@@ -32,6 +32,10 @@ const useMonster = (game: Game, name: string, options = {}) => {
     });
   }
 
+  const clearDestory = () => {
+    return monsterList.filter((monster) => !monster.obj.destroyed);
+  }
+
   const create = (position) => {
     const gameObj = new GameObject(`${name}-${size}`, {
       size: { width: 40, height: 40 },
@@ -62,6 +66,7 @@ const useMonster = (game: Game, name: string, options = {}) => {
     monsterList,
     create,
     destory,
+    clearDestory,
   };
 };
 

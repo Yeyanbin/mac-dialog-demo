@@ -203,6 +203,9 @@ onMounted(() => {
       })
     });
 
+    monsters.forEach((item) => {
+      item.monsterList = item.clearDestory();
+    });
     
     // 更新文本
     (text.components[1] as any).text = 
@@ -221,14 +224,13 @@ onMounted(() => {
       bullet.destory();
     }
 
-    for (let b = bullets.length - 1; b >= 0; b--) {
-      if (!bullets[b].content || !bullets[b].content.transform) {
-        console.log(bullets[b], b, '被销毁了')
+    for (let bulletIndex = bullets.length - 1; bulletIndex >= 0; bulletIndex--) {
+      if (!bullets[bulletIndex].content || !bullets[bulletIndex].content.transform) {
         break;
       }
       // console.log(bullets[b], b)
-      const { bulletWidth, bulletHeight } = bullets[b];
-      const position = (bullets[b].content as GameObject).transform.position;
+      const { bulletWidth, bulletHeight } = bullets[bulletIndex];
+      const position = (bullets[bulletIndex].content as GameObject).transform.position;
       monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster) => {
         if (!monster.obj.destroyed && isRectangleOverlap({
           x: position.x - bulletWidth * 0.5,
@@ -241,7 +243,7 @@ onMounted(() => {
           width: monster.width,
           height: monster.height,
         })) {
-          hitCallback(bullets[b], monster);
+          hitCallback(bullets[bulletIndex], monster);
         }
       }));
     }
