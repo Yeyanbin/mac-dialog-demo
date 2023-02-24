@@ -8,7 +8,8 @@
     "build:simple-win": "rimraf dist && vite build",
     "serve": "vite preview",
     "reinstall": "rm -rf node_modules && npm i",
-    "reinstall-win": "rimraf node_modules && npm i"
+    "reinstall-win": "rimraf node_modules && npm i",
+    "deploy": "./scripts/autoDeploy.sh"
   },
   "dependencies": {
     "@eva/eva.js": "^1.2.8",

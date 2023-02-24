@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ArrowBack, ArrowForward, RefreshOutline } from '@vicons/ionicons5'
 import { ref, nextTick, reactive, onMounted } from 'vue'
-import useDomObserver from '../../libs/@yubi/y-hooks/useDomObserver';
 
 const browserRef = ref<HTMLDivElement>();
 const inputRef = ref(null);
@@ -18,8 +17,6 @@ function onEnter() {
   history.push(value);
   historyIndex.value = historyIndex.value + 1;
 }
-
-
 
 function refresh() {
   const oldUrl = url.value;
