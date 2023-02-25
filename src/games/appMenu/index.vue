@@ -1,10 +1,6 @@
 
 <script setup lang="ts">
 
-
-
-import { CashOutline as CashIcon } from '@vicons/ionicons5'
-
 import { defineEmits } from 'vue';
 import { DIALOG_STATE } from '../../components/WindowDialog/domains/useDialogState';
 import { resource, RESOURCE_TYPE } from '@eva/eva.js';
@@ -58,7 +54,7 @@ const addApplication = (app) => {
 </script>
 
 <template>
-  <div>
+  <n-card class="app-card" title="应用分享" :size="'small'">
     <div class="icon-wrap" v-for="item of appMap">
       <n-button circle @click="addApplication(item)">
         <template #icon>
@@ -73,21 +69,30 @@ const addApplication = (app) => {
         {{ item.name }}
       </div>
     </div>
-  </div>  
+  </n-card>  
 </template>
 
 <style lang="scss" scoped>
 .icon-wrap {
   display: flex;
   width: 80px;
-  margin: 20px 15px;
+  margin: 20px 0px;
   flex-direction: column;
   align-items: center;
-  color: whitesmoke;
+  color: greys;
   font-size: 12px;
 
   button {
     margin-bottom: 5px;
+  }
+}
+.app-card {
+  // opacity: 0.6;
+  background: #ffffffaa;
+  margin-top: 15px;
+
+  div {
+    // opacity: 1;
   }
 }
 </style>
