@@ -54,7 +54,7 @@ const addApplication = (app) => {
 </script>
 
 <template>
-  <n-card class="app-card" title="应用分享" :size="'small'">
+  <n-card class="app-card" title="游戏" :size="'small'">
     <div class="icon-wrap" v-for="item of appMap">
       <n-button circle @click="addApplication(item)">
         <template #icon>
