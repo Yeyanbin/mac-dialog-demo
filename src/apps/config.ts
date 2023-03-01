@@ -13,8 +13,8 @@ export const appMap = {
     name: 'Yubi Blog',
     imageSrc: `${getUrlPrefix()}/emoji/toolbox.png`,
     defaultDialogProp: {
-      height: '600px',
-      width: '850px',
+      height: '700px',
+      width: '1000px',
     },
   },
   login: { 
@@ -66,6 +66,15 @@ export const appMap = {
       url: 'https://blog.anothersola.cn/'
     }
   },
+  // chenBlog: { 
+  //   component: markRaw(iframeBrowser),
+  //   title: '',
+  //   name: 'sola-blog',
+  //   imageSrc: `${getUrlPrefix()}/emoji/volleyball.png`,
+  //   comProps: {
+  //     url: 'http://brucechen.vip/'
+  //   }
+  // },
   VueDoc: { 
     component: markRaw(iframeBrowser),
     title: '',
@@ -82,6 +91,6 @@ export const appMap = {
 }
 
 export const defaultWindowConfig = {
-  height: 800,
-  width: 600,
+  height: 600,
+  width: 800,
 }
