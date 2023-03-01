@@ -1,6 +1,7 @@
 import yubiBlog from './yubiBlog/index.vue';
 import loginPage from './loginPage/index.vue';
 import loginPageIframe from './loginPageIframe/index.vue';
+import iframeBrowser from './components/iframeBrowser.vue';
 
 import { markRaw } from 'vue';
 import { getUrlPrefix } from '../utils/image';
@@ -35,6 +36,21 @@ export const appMap = {
       height: '400px',
       width: '500px',
     },
+    comProps: {
+    }
+  },
+  wzry: { 
+    component: markRaw(iframeBrowser),
+    title: '',
+    name: '王者荣耀咨询页',
+    imageSrc: `${getUrlPrefix()}/emoji/joker.png`,
+    defaultDialogProp: {
+      height: '600px',
+      width: '800px',
+    },
+    comProps: {
+      url: 'https://lengyibai.gitee.io/wzry'
+    }
   },
 }
 
