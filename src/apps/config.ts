@@ -42,7 +42,7 @@ export const appMap = {
   wzry: { 
     component: markRaw(iframeBrowser),
     title: '',
-    name: '王者荣耀咨询页',
+    name: '王者荣耀图鉴',
     imageSrc: `${getUrlPrefix()}/emoji/joker.png`,
     defaultDialogProp: {
       height: '600px',
@@ -50,6 +50,19 @@ export const appMap = {
     },
     comProps: {
       url: 'https://lengyibai.gitee.io/wzry'
+    }
+  },
+  solaBlog: { 
+    component: markRaw(iframeBrowser),
+    title: '',
+    name: 'sola-blog',
+    imageSrc: `${getUrlPrefix()}/emoji/wrench.png`,
+    defaultDialogProp: {
+      height: '600px',
+      width: '800px',
+    },
+    comProps: {
+      url: 'https://blog.anothersola.cn/'
     }
   },
 }
