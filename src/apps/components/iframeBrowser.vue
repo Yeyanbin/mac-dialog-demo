@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
+
+const props = defineProps({
+    url: String
+});
 
 const browserRef = ref<HTMLDivElement>();
-const url = ref("https://yeyanbin.github.io/yubi-blog/");
 
 onMounted(() => {
   console.log(browserRef);
@@ -23,7 +26,7 @@ const log = (...arg) => {
 
 <template>
   <div class="com-browser">
-    <iframe ref="browserRef" @haschange="log" @load="log" :src="url"></iframe>
+    <iframe ref="browserRef" @haschange="log" @load="log" :src="props.url"></iframe>
   </div>
 </template>
 

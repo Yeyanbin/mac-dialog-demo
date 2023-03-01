@@ -1,5 +1,6 @@
 import yubiBlog from './yubiBlog/index.vue';
 import loginPage from './loginPage/index.vue';
+import loginPageIframe from './loginPageIframe/index.vue';
 
 import { markRaw } from 'vue';
 import { getUrlPrefix } from '../utils/image';
@@ -19,6 +20,16 @@ export const appMap = {
     component: markRaw(loginPage),
     title: '',
     name: '登陆页',
+    imageSrc: `${getUrlPrefix()}/emoji/club.png`,
+    defaultDialogProp: {
+      height: '400px',
+      width: '500px',
+    },
+  },
+  loginIframe: { 
+    component: markRaw(loginPageIframe),
+    title: '',
+    name: '登陆页Iframe',
     imageSrc: `${getUrlPrefix()}/emoji/club.png`,
     defaultDialogProp: {
       height: '400px',
