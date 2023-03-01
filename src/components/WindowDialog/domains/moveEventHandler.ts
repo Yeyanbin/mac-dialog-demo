@@ -17,6 +17,7 @@ const moveEventDebounce = useDebounce<MouseEvent>((ev: MouseEvent) => {
 });
 
 const moveEventFunc = (ev: MouseEvent) => {
+  ev.stopPropagation();
   moveEventDebounce.run(ev);
 };
 
@@ -36,6 +37,7 @@ const removeMoveEventListener = (key) => {
 const upEvent = [];
 
 document.body.addEventListener("mouseup", (ev: MouseEvent) => {
+  ev.stopPropagation();
   while (upEvent.length > 0) {
     const event = upEvent.pop();
     event(ev);

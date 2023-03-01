@@ -28,7 +28,7 @@
           :index="index"
           :title="dialogItem.title"
           v-on="handleDialogFunc(dialogItem.func, index)">
-          <component :is="dialogItem.component"></component>
+          <component :is="dialogItem.component" v-bind="dialogItem.comProps"></component>
         </WindowDialog>
       </template>
     </template>
