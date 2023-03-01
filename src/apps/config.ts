@@ -39,6 +39,15 @@ export const appMap = {
     comProps: {
     }
   },
+  textAnime: { 
+    component: markRaw(iframeBrowser),
+    title: '',
+    name: '文本动画（撩妹用）',
+    imageSrc: `${getUrlPrefix()}/emoji/redHeart.png`,
+    comProps: {
+      url: 'https://yeyanbin.github.io/yubi-form-joy/dist/#/textAnime'
+    }
+  },
   wzry: { 
     component: markRaw(iframeBrowser),
     title: '',
@@ -64,7 +73,11 @@ export const appMap = {
     imageSrc: `${getUrlPrefix()}/favicon.ico`,
     comProps: {
       url: 'https://v3.cn.vuejs.org/'
-    }
+    },
+    defaultDialogProp: {
+      height: '700px',
+      width: '1000px',
+    },
   },
 }
 
