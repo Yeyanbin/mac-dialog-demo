@@ -9,19 +9,19 @@ const submit = (username, password) => {
 
 <template>
   <div class="com-browser">
-  <WujieVue
-    width="100%"
-    height="100%"
-    name="login"
-    :url="url"
-    :sync="true"
-    :props="{
-      data: {},
-      methods: {
-        submit
-      }
-    }"
-  ></WujieVue>
+    <WujieVue
+      width="100%"
+      height="100%"
+      name="login"
+      :url="url"
+      :sync="true"
+      :props="{
+        data: {},
+        methods: {
+          submit
+        }
+      }"
+    ></WujieVue>
   </div>
 </template>
 
