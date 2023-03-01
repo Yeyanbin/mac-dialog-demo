@@ -44,10 +44,6 @@ export const appMap = {
     title: '',
     name: '王者荣耀图鉴',
     imageSrc: `${getUrlPrefix()}/emoji/joker.png`,
-    defaultDialogProp: {
-      height: '600px',
-      width: '800px',
-    },
     comProps: {
       url: 'https://lengyibai.gitee.io/wzry'
     }
@@ -57,17 +53,22 @@ export const appMap = {
     title: '',
     name: 'sola-blog',
     imageSrc: `${getUrlPrefix()}/emoji/wrench.png`,
-    defaultDialogProp: {
-      height: '600px',
-      width: '800px',
-    },
     comProps: {
       url: 'https://blog.anothersola.cn/'
+    }
+  },
+  VueDoc: { 
+    component: markRaw(iframeBrowser),
+    title: '',
+    name: 'Vue doc',
+    imageSrc: `${getUrlPrefix()}/favicon.ico`,
+    comProps: {
+      url: 'https://v3.cn.vuejs.org/'
     }
   },
 }
 
 export const defaultWindowConfig = {
   height: 800,
-  width: 500,
+  width: 600,
 }
