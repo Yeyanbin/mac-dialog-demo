@@ -1,14 +1,23 @@
-import yubiBlog from './yubiBlog/index.vue';
+// import yubiBlog from './yubiBlog/index.vue';
 import loginPage from './loginPage/index.vue';
 import loginPageIframe from './loginPageIframe/index.vue';
 import iframeBrowser from './components/iframeBrowser.vue';
+import catQuick from './games/catQuick/index.vue';
 
 import { markRaw } from 'vue';
 import { getUrlPrefix } from '../utils/image';
 
-export const appMap = {
+export const appMap: any = {
+    // https://github.com/Yeyanbin/yubi_image_manager
+    flutterImageManager: { 
+      name: 'image_manager',
+      imageSrc: `${getUrlPrefix()}/flutter_icon.png`,
+      url: 'https://github.com/Yeyanbin/yubi_image_manager',
+      desc: `使用flutter做的图片管理工具，通过行程自动划分出一个个图库，支持持久化，可以很方便的选图。支持macos，可下载体验。
+          做这app的原因是本人是业余摄影师，发现mac自带的图片预览工具太难用了，选片起来非常麻烦，特别想整理这两三年拍的一万多张照片，就自己做了一个。`
+    },
   yubiBlog: { 
-    component: markRaw(yubiBlog),
+    component: markRaw(iframeBrowser),
     title: '',
     name: 'Yubi Blog',
     imageSrc: `${getUrlPrefix()}/emoji/toolbox.png`,
@@ -16,78 +25,63 @@ export const appMap = {
       height: '700px',
       width: '1000px',
     },
-  },
-  login: { 
-    component: markRaw(loginPage),
-    title: '',
-    name: '登陆页',
-    imageSrc: `${getUrlPrefix()}/emoji/club.png`,
-    defaultDialogProp: {
-      height: '400px',
-      width: '500px',
-    },
-  },
-  loginIframe: { 
-    component: markRaw(loginPageIframe),
-    title: '',
-    name: '登陆页Iframe',
-    imageSrc: `${getUrlPrefix()}/emoji/club.png`,
-    defaultDialogProp: {
-      height: '400px',
-      width: '500px',
-    },
     comProps: {
-    }
+      url: 'https://yeyanbin.github.io/yubi-blog/doc/'
+    },
+    desc: `自己记笔记的地方，这个项目会将本地的markdown文件，按照目录生成具体的树形目录。
+    技术栈：ts, React, next, markdown-it, tailwindcss。
+    开源地址：https://github.com/Yeyanbin/SBlog`
   },
-  textAnime: { 
+  lowCodeDemo: { 
     component: markRaw(iframeBrowser),
     title: '',
-    name: '文本动画（撩妹用）',
-    imageSrc: `${getUrlPrefix()}/emoji/redHeart.png`,
-    comProps: {
-      url: 'https://yeyanbin.github.io/yubi-form-joy/dist/#/textAnime'
-    }
-  },
-  wzry: { 
-    component: markRaw(iframeBrowser),
-    title: '',
-    name: '王者荣耀图鉴',
+    name: '低代码Demo',
     imageSrc: `${getUrlPrefix()}/emoji/joker.png`,
     comProps: {
-      url: 'https://lengyibai.gitee.io/wzry'
-    }
-  },
-  solaBlog: { 
-    component: markRaw(iframeBrowser),
-    title: '',
-    name: 'sola-blog',
-    imageSrc: `${getUrlPrefix()}/emoji/wrench.png`,
-    comProps: {
-      url: 'https://blog.anothersola.cn/'
-    }
+      url: 'https://yeyanbin.github.io/yubi-react-schema-form/formEdit/'
+    },
+    defaultDialogProp: {
+      height: '100vh',
+      width: '100vw',
+      x: 0,
+      y: 0
+    },
+    desc: `之前开分享会时做的低代码Demo，可以支持一些简单的条件判断，支持简单的表单规则，可生成预览代码，表达式算法用的逆波兰表达式解决。
+    技术栈：ts, React, next, tailwindcss。
+    开源地址：https://github.com/Yeyanbin/yubi-react-form-joy`
   },
   ngAdmin: { 
     component: markRaw(iframeBrowser),
-    title: 'Angular11的通用后台模版解决方案，支持快捷键，国际化，路由守卫，请求拦截等特征。',
+    desc: `Angular11的通用后台模版解决方案，支持快捷键，国际化，路由守卫，请求拦截等特征。
+    技术栈：Angular, ts, antd
+    开源地址：https://gitee.com/Yubi233/yubi-angular-admin`,
     name: 'yubi Angular admin',
     imageSrc: 'https://angular.io/assets/images/logos/angular/shield-large.svg',
     comProps: {
-      url: 'https://yubi233.gitee.io/yubi-angular-admin/'
-    }
-  },
-  // https://yubi233.gitee.io/yubi-angular-admin/
-  VueDoc: { 
-    component: markRaw(iframeBrowser),
-    title: '',
-    name: 'Vue doc',
-    imageSrc: `${getUrlPrefix()}/favicon.ico`,
-    comProps: {
-      url: 'https://v3.cn.vuejs.org/'
+      url: 'https://yeyanbin.github.io/yubi-angular-admin/'
     },
     defaultDialogProp: {
       height: '700px',
       width: '1000px',
     },
+  },
+  catQuickVue: { 
+    component: markRaw(catQuick),
+    title: '可上下左右移动的猫咪，会自动随机射击',
+    name: 'Cat(优化碰撞检测)',
+    imageSrc: `${getUrlPrefix()}/emoji/cat.png`,
+    defaultDialogProp: {
+      height: '800px',
+      width: '1200px',
+    },
+    desc: `使用渲染引擎eva.js做的小游戏，优化了碰撞检测算法。`
+  },
+  // https://github.com/Yeyanbin/plane_war_game
+  planeWarGame: { 
+    name: '模仿微信飞机大战',
+    imageSrc: `${getUrlPrefix()}/hero_fly.png`,
+    url: 'https://github.com/Yeyanbin/plane_war_game',
+    desc: `使用flutter和游戏引擎flame，模仿了之前微信飞机大战的练手作，测试了android和mac端，可在github下载mac app试试。`
   },
 }
 

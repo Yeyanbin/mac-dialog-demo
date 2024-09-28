@@ -2,11 +2,11 @@
 <script setup lang="ts">
 
 import { defineEmits } from 'vue';
-import { DIALOG_STATE } from '../../components/WindowDialog/domains/useDialogState';
+import { DIALOG_STATE } from '../../../components/WindowDialog/domains/useDialogState';
 import { resource, RESOURCE_TYPE } from '@eva/eva.js';
 
 import { appMap } from '../config';
-import { getUrlPrefix } from '../../utils/image';
+import { getUrlPrefix } from '../../../utils/image';
 import { flowerBulletEmojiNameList, monsterEmojiNameList } from '../emoji.config';
 
 import { gameConfig } from '../config';
@@ -95,4 +95,4 @@ const addApplication = (app) => {
     // opacity: 1;
   }
 }
-</style>
+</style>../../../components/WindowDialog/domains/useDialogState../../../utils/image

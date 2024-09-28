@@ -215,8 +215,8 @@ onMounted(() => {
     }，消灭怪物数量：${destoryTime}，`;
 
 
-    const hitMonsterList = [];
-      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster) => {
+    const hitMonsterList: any[] = [];
+      monsters.forEach((monsterData) => monsterData.monsterList.forEach((monster: any) => {
         hitMonsterList.push({
           x_1: monster.obj.transform.position.x - 0.5 * monster.width,
           y_1: monster.obj.transform.position.y  - 0.5 * monster.height,

@@ -19,6 +19,10 @@ const props = defineProps({
 const emit = defineEmits(['addApplication']);
 
 const addApplication = (app) => {
+  if (app.url) {
+    window.open(app.url);
+    return;
+  }
   emit('addApplication', app.conponent, {
     isEasy: true,
     state: DIALOG_STATE.NORMAL,
@@ -33,19 +37,23 @@ const addApplication = (app) => {
 
 <template>
   <div class="app-wrap">
-    <n-card class="app-card" title="微应用" :size="'small'">
-      <div class="icon-wrap" v-for="item of appMap">
-        <n-button circle @click="addApplication(item)">
-          <template #icon>
-            <img
-              width="20"
-              height="20"
-              :src="item.imageSrc"
-            />        
-          </template>
-        </n-button>
-        <div>
-          {{ item.name }}
+    <n-card class="app-card" title="个人项目展示" :size="'small'">
+      <div class="app-card-item" v-for="item of appMap">
+        <div class="icon-wrap">
+          <n-button circle @click="addApplication(item)">
+            <template #icon>
+              <img
+                width="20"
+                height="20"
+                :src="item.imageSrc"
+              />        
+            </template>
+          </n-button>
+          <div>
+            {{ item.name }}
+          </div>
+        </div>
+        <div class="app-desc" v-html="item.desc">
         </div>
       </div>
     </n-card>  
@@ -68,11 +76,22 @@ const addApplication = (app) => {
 }
 .app-wrap {
   margin: 15px 20px;
-
 }
+
+.app-desc {
+  padding: 12px 8px;
+  width: 400px;
+  text-align: left;
+  font-size: 13px;
+}
+
 .app-card {
   // opacity: 0.6;
   background: #ffffffaa;
+
+  &-item {
+    display: flex;
+  }
 
   div {
     // opacity: 1;

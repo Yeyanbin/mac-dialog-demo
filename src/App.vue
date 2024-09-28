@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computeHit, IHitObj } from './games/utils/hit_copy';
+import { computeHit, IHitObj } from './apps/games/utils/hit_copy';
 import Layout from './layout/index.vue';
 
 const bullets: IHitObj[] = [
@@ -69,3 +69,4 @@ body {
   margin: 0;
 }
 </style>
+./apps/games/utils/hit_copy

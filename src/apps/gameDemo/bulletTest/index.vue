@@ -5,22 +5,18 @@ import { RendererSystem } from '@eva/plugin-renderer';
 import { Img, ImgSystem } from '@eva/plugin-renderer-img';
 import { Event, EventSystem, HIT_AREA_TYPE } from '@eva/plugin-renderer-event';
 import { getUrlPrefix } from '../../utils/image';
-import { getDistance, rotateToPoint } from '../utils/base';
-import useMonster from '../hooks/useMonster';
 
 onMounted(() => {
   onUnmounted(() => {
     console.log('销毁')
     game.destroy();
   })
-  const canvas = document.querySelector('#move') as HTMLCanvasElement;
-
   const game = new Game({
     systems: [
       new RendererSystem({
-        canvas,
+        canvas: document.querySelector('#canvas'),
         width: 1000,
-        height: 800,
+        height: 1000,
         backgroundColor: 0x999999
       }),
       new ImgSystem(),
@@ -30,9 +26,9 @@ onMounted(() => {
     ],
   });
 
-  const bear = new GameObject('image', {
+  const image = new GameObject('image', {
     size: { width: 30, height: 40 },
-    origin: { x: 0.5, y: 0.5 },
+    origin: { x: 0, y: 0 },
     position: {
       x: 500,
       y: 500,
@@ -43,29 +39,51 @@ onMounted(() => {
     },
   });
 
-  bear.addComponent(
+  image.addComponent(
     new Img({
       resource: 'bearImg',
     })
   );
 
-  game.scene.addChild(bear);
+  game.scene.addChild(image);
 
-  const bearMonster = useMonster(bear, game);
+  const evt = image.addComponent(
+    new Event({
+      // 使用这个属性设置交互事件可以触发的区域，骨骼动画有所变差，可以临时在当前游戏对象下添加一个同类型同属性的Graphic查看具体点击位置。
+      hitArea: {
+        type: HIT_AREA_TYPE.Rect,
+        style: {
+          x: 0,
+          y: 0,
+          width: 30,
+          height: 40
+        },
+      },
+    }),
+  );
 
-  canvas.addEventListener('click', (ev) => {
-    ev.stopPropagation()
+  let run: () => void = undefined
+
+  evt.on('touchmove', e => {
+    // console.log('touchmove', e)
+    run = () => {
+      // console.log('run', e)
+      const transform = e.gameObject.transform;
+      transform.position = e.data.position;
+    }
   });
-  canvas.addEventListener('mousedown', (ev) => {
-    bearMonster.moveToPosition(ev.offsetX, ev.offsetY);
-    ev.stopPropagation()
-  });
+
+  game.ticker.add((e: UpdateParams)=>{
+    // console.log(e)
+    run && run();
+    run = undefined;
+  })
 })
 
 </script>
 
 <template>
   <div>
-    <canvas id="move" ></canvas>
+    <canvas id="canvas" ></canvas>
   </div>
-</template>
+</template>../../../utils/image

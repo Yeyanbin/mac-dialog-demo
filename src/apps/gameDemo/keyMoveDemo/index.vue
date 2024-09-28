@@ -69,4 +69,4 @@ onMounted(() => {
   <div>
     <canvas id="move" ></canvas>
   </div>
-</template>
+</template>../../../utils/image

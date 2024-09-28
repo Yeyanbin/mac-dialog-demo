@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { IWindowDialog, IDialogHook, IDialogEvent } from "../../../interface/windowDialog";
+import { IWindowDialog, IDialogHook, IDialogEvent, IDialogProp } from "../../../interface/windowDialog";
 
 export const WINDOW_DIALOG_STATE = {
   NORMAL: 1,
@@ -10,7 +10,7 @@ export const WINDOW_DIALOG_STATE = {
 
 const dialogCount = ref<number>(0);
 
-const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
+const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[], defaultDialogProp?: IDialogProp) => {
   
   defaultWindowDialogList.forEach((_, index) => {
     if (!defaultWindowDialogList[index].key)
@@ -27,11 +27,13 @@ const useWindowDialogList = (defaultWindowDialogList: IWindowDialog[]) => {
       key: `___default_key_${dialogCount.value}`,
       appName,
       state: WINDOW_DIALOG_STATE.NORMAL,
+      comProps: undefined,
       ...options,
 
       defaultDialogProp: {
-        x: 10 * size + dialogCount.value * 10,
-        y: 50 * (size % 8 + 1),
+        ...defaultDialogProp,
+        x: defaultDialogProp.x + 10 * size + dialogCount.value * 10,
+        y: defaultDialogProp.y + 50 * ((size - 1) % 8),
         ...(options as any).defaultDialogProp,
       },
     });

@@ -9,7 +9,8 @@
     "serve": "vite preview",
     "reinstall": "rm -rf node_modules && npm i",
     "reinstall-win": "rimraf node_modules && npm i",
-    "deploy": "./scripts/autoDeploy.sh"
+    "deploy": "./scripts/autoDeploy.sh",
+    "deploy:demo": "./scripts/githubPage.sh"
   },
   "dependencies": {
     "@eva/eva.js": "^1.2.8",

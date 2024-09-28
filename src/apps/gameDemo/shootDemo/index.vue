@@ -187,4 +187,4 @@ onMounted(() => {
   <div>
     <canvas id="shoot"></canvas>
   </div>
-</template>
+</template>../../../utils/image

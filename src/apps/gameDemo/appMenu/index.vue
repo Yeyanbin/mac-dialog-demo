@@ -6,11 +6,11 @@
 import { CashOutline as CashIcon } from '@vicons/ionicons5'
 
 import { defineEmits, markRaw } from 'vue';
-import { DIALOG_STATE } from '../../components/WindowDialog/domains/useDialogState';
+import { DIALOG_STATE } from '../../../components/WindowDialog/domains/useDialogState';
 import { resource, RESOURCE_TYPE } from '@eva/eva.js';
 
 import { appMap } from '../config';
-import { getUrlPrefix } from '../../utils/image';
+import { getUrlPrefix } from '../../../utils/image';
 
 resource.addResource([
   {
@@ -87,4 +87,4 @@ const addApplication = (app) => {
     margin-bottom: 5px;
   }
 }
-</style>
+</style>../../../components/WindowDialog/domains/useDialogState../../../utils/image
