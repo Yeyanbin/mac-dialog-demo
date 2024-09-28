@@ -3,7 +3,6 @@
 
 import { defineEmits } from 'vue';
 import { DIALOG_STATE } from '../../components/WindowDialog/domains/useDialogState';
-import { resource, RESOURCE_TYPE } from '@eva/eva.js';
 
 import { appMap } from '../config';
 
@@ -37,7 +36,7 @@ const addApplication = (app) => {
 
 <template>
   <div class="app-wrap">
-    <n-card class="app-card" title="个人项目展示" :size="'small'">
+    <n-card class="app-card" title="个人项目展示墙" :size="'small'">
       <div class="app-card-item" v-for="item of appMap">
         <div class="icon-wrap">
           <n-button circle @click="addApplication(item)">
@@ -76,6 +75,8 @@ const addApplication = (app) => {
 }
 .app-wrap {
   margin: 15px 20px;
+  height: calc(100vh - 60px);
+  overflow: auto;
 }
 
 .app-desc {

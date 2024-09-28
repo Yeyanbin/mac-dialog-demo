@@ -8,29 +8,29 @@ import { markRaw } from 'vue';
 import { getUrlPrefix } from '../utils/image';
 
 export const appMap: any = {
-    // https://github.com/Yeyanbin/yubi_image_manager
-    flutterImageManager: { 
-      name: 'image_manager',
-      imageSrc: `${getUrlPrefix()}/flutter_icon.png`,
-      url: 'https://github.com/Yeyanbin/yubi_image_manager',
-      desc: `使用flutter做的图片管理工具，通过行程自动划分出一个个图库，支持持久化，可以很方便的选图。支持macos，可下载体验。
-          做这app的原因是本人是业余摄影师，发现mac自带的图片预览工具太难用了，选片起来非常麻烦，特别想整理这两三年拍的一万多张照片，就自己做了一个。`
-    },
-  yubiBlog: { 
+  macDialog: {
+    name: 'Mac dialog',
     component: markRaw(iframeBrowser),
     title: '',
-    name: 'Yubi Blog',
-    imageSrc: `${getUrlPrefix()}/emoji/toolbox.png`,
+    imageSrc: `${getUrlPrefix()}/favicon.ico`,
     defaultDialogProp: {
       height: '700px',
       width: '1000px',
     },
     comProps: {
-      url: 'https://yeyanbin.github.io/yubi-blog/doc/'
+      url: 'https://yeyanbin.github.io/mac-dialog-demo/dist/'
     },
-    desc: `自己记笔记的地方，这个项目会将本地的markdown文件，按照目录生成具体的树形目录。
-    技术栈：ts, React, next, markdown-it, tailwindcss。
-    开源地址：https://github.com/Yeyanbin/SBlog`
+    desc: `模仿MacOS的窗口和浏览器，是刚接触微前端时的一个想法：“能不能做一个统筹微应用的网页入口，可以很方便的打开若干网页小程序？”
+    技术栈：vue3，wujie，vite，naiveUI。
+    开源地址：https://github.com/Yeyanbin/mac-dialog-demo/`
+  },
+  // https://github.com/Yeyanbin/yubi_image_manager
+  flutterImageManager: { 
+    name: 'image_manager',
+    imageSrc: `${getUrlPrefix()}/flutter_icon.png`,
+    url: 'https://github.com/Yeyanbin/yubi_image_manager',
+    desc: `使用flutter做的图片管理工具，通过行程自动划分出一个个图库，支持持久化，可以很方便的选图。支持macos，可下载体验。
+        做这app的原因是本人是业余摄影师，发现mac自带的图片预览工具太难用了，选片起来非常麻烦，特别想整理这两三年拍的一万多张照片，就自己做了一个。`
   },
   lowCodeDemo: { 
     component: markRaw(iframeBrowser),
@@ -49,6 +49,22 @@ export const appMap: any = {
     desc: `之前开分享会时做的低代码Demo，可以支持一些简单的条件判断，支持简单的表单规则，可生成预览代码，表达式算法用的逆波兰表达式解决。
     技术栈：ts, React, next, tailwindcss。
     开源地址：https://github.com/Yeyanbin/yubi-react-form-joy`
+  },
+  yubiBlog: { 
+    component: markRaw(iframeBrowser),
+    title: '',
+    name: 'Yubi Blog',
+    imageSrc: `${getUrlPrefix()}/emoji/toolbox.png`,
+    defaultDialogProp: {
+      height: '700px',
+      width: '1000px',
+    },
+    comProps: {
+      url: 'https://yeyanbin.github.io/yubi-blog/doc/'
+    },
+    desc: `自己记笔记的地方，这个项目会将本地的markdown文件，按照目录生成具体的树形目录。
+    技术栈：ts, React, next, markdown-it, tailwindcss。
+    开源地址：https://github.com/Yeyanbin/SBlog`
   },
   ngAdmin: { 
     component: markRaw(iframeBrowser),
